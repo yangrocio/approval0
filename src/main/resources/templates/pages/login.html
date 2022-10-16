@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="pages/common/aboutteacher:: zschteacherheader"></div>
+</head>
+<style>
+    #bgimg{
+        /*background-image: url("");*/
+        background: url("/approval/img/timg.jpg") no-repeat;
+        height:100%;
+        width:100%;
+        overflow: hidden;
+        background-size:cover;
+    }
+</style>
+
+<body class="hold-transition login-page" id="bgimg" onkeypress="keyFun()" >
+
+<div class="login-box">
+    <div class="login-logo">
+        <b>安阳师范学院</b>
+        <p>科研成果管理系统</p>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg"><b style="font-size:  20px;">登录系统</b></p>
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="select"  value="kygl" checked="checked">
+                    科研成果管理系统
+                </label>
+                <label style="float: right">
+                    <input type="radio" name="select"  value="zscq" >
+                    知识产权审核系统
+                </label>
+            </div>
+            <div class="form-group">
+                <select class="form-control" id="operator">
+                    <option value="1">普通教师</option>
+                    <option value="2">院系管理员</option>
+                    <option value="3">学校管理员</option>
+                    <option value="5">学校领导</option>
+                    <option value="4">超级管理员</option>
+
+                </select>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" id="username" class="form-control" placeholder="账号">
+                <!--<span class="glyphicon glyphicon-user form-control-feedback"></span>-->
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" id="password" class="form-control" placeholder="密码">
+                <!--<span class="glyphicon glyphicon-lock form-control-feedback"></span>-->
+            </div>
+            <div class="row">
+                <div class="col-xs-4" ><button type="submit" id="login" class="btn btn-primary btn-block btn-flat" onclick="loginsystem()">登录</button></div>
+            </div>
+        <div class="footer" style="color: red; font-size: 14px;">
+            请使用<a href="https://www.google.cn/chrome/index.html" target="_blank">Google</a>或<a href="http://browser.360.cn/"  target="_blank">360浏览器极速模式</a>填报
+        </div>
+    </div>
+</div>
+<!-- /.login-box -->
+
+<div th:replace="pages/common/aboutteacher:: zschteacherfooter"></div>
+
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+</script>
+</body>
+
+</html>

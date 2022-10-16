@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div  th:replace="teacher/teacherheader :: teacherheader"></div>
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-mini"><b>科研处</b></span>
+            <span class="logo-lg"><b>成果管理</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                </p>
+                            </li>
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()" class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()" class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+
+
+
+            <div th:replace="teacher/teachermenu :: teachermenu"></div>
+
+
+
+        </section>
+    </aside>
+
+
+    <div class="content-wrapper">
+
+        <section class="content-header">
+            <h1>
+                学术著作
+
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li><a href="#">学术著作</a></li>
+            </ol>
+
+
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <div class="box box-primary">
+
+
+                <div class="box-body">
+
+                    <!--基础控件-->
+                    <div class="tab-pane" id="tab-common" >
+                        <div class="row data-type">
+
+                            <div class="col-md-2 title mast" >题目</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control"  id="TiMu">
+                            </div>
+
+                            <div class="col-md-2 title mast" >第一作者</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control"  id="DYZZ">
+                            </div>
+
+                            <div class="col-md-2 title" >其它作者</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control"  id="QTZZ">
+                            </div>
+
+                            <div class="col-md-2 title mast" >ISBN</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control"  id="ISBN">
+                            </div>
+                            <div class="col-md-2 title mast" >出版社类型</div>
+                            <div class="col-md-4 data" style="overflow:visible;">
+                                <div id="WorkType" class="col-md-11"></div>
+
+                            </div>
+
+                            <div class="col-md-2 title mast" >出版社</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control"  id="Press">
+                            </div>
+                            <div class="col-md-2 title mast" >著作类型</div>
+                            <div class="col-md-4 data">
+                                <input list="zzlxlist" class="form-control" id="zzlx">
+                                <datalist id="zzlxlist">
+                                    <option>无</option>
+                                    <option>专著</option>
+                                    <option>教材</option>
+                                    <option>译著</option>
+                                    <option>点校</option>
+                                    <option>工具书</option>
+                                    <option>评著</option>
+                                    <option>科普</option>
+                                </datalist>
+                                <!--<select class="form-control" id="zzlx">-->
+                                    <!--<option>无</option>-->
+                                    <!--<option>专著</option>-->
+                                    <!--<option>教材</option>-->
+                                    <!--<option>译著</option>-->
+                                    <!--<option>点校</option>-->
+                                    <!--<option>工具书</option>-->
+                                    <!--<option>评著</option>-->
+                                    <!--<option>科普</option>-->
+                                <!--</select>-->
+                            </div>
+
+
+                            <div class="col-md-2 title mast" >CIP核字</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control"  id="CIP">
+                            </div>
+
+                            <div class="col-md-2 title mast" >出版时间</div>
+                            <div class="col-md-4 data">
+                                <input type="date" class="form-control"  id="Time">
+                            </div>
+
+                            <div class="col-md-2 title mast" >字数(千)</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" onchange="judgereward()"  id="ZiShu">
+                            </div>
+
+                            <div class="col-md-2 title mast" >业绩点</div>
+                            <div class="col-md-4 data">
+
+                                <input type="number" class="form-control"  id="Points">
+
+                            </div>
+                            <div class="col-md-2 title" >科研奖励(万)</div>
+                            <div class="col-md-4 data">
+                                <input type="number" class="form-control"  id="Reward">
+                            </div>
+
+                            <div class="col-md-2 title" >备注</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control"  id="fq">
+                            </div>
+
+
+
+                            <div class="col-md-2 title mast" >附件上传</div>
+                            <div class="col-md-4 data">
+                                <input type="file" class="form-control"  id="FJSC" accept=".pdf">
+                            </div>
+
+
+
+                            <div class="col-md-12 data text-center">
+                                <button type="button" class="btn bg-maroon" onclick="putxszz()">提交</button>
+                                <!--<button type="button" class="btn bg-maroon" onclick="">暂存</button>-->
+                                <button type="button" class="btn bg-default" onclick="history.back(-1);">返回</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--基础控件/-->
+
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<div  th:replace="teacher/teacherfooter :: teacherfooter"></div>
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+    });
+    setSidebarActive("xszz");
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+
+    // 列表按钮   让按钮变大
+    $("#dataList td input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+    });
+    // 全选操作  全选操作
+    $("#selall").click(function() {
+        var clicks = $(this).is(':checked');
+        if (!clicks) {
+            $("#dataList td input[type='checkbox']").iCheck("uncheck");
+        } else {
+            $("#dataList td input[type='checkbox']").iCheck("check");
+        }
+        $(this).data("clicks", !clicks);
+    });
+
+
+    $('#WorkType').combotree({
+        url: '/approval/json/xszztree.json',
+        method: 'get',
+        width:'100%',
+        editable:true,
+        animate:true,
+        labelPosition:'top',
+        onBeforeSelect:function(node){
+            if(node.children){
+                //先封装成一个tree
+                var t = $('#WorkType').combotree('tree');
+                //然后使用toggle
+                t.tree('toggle',node.target);//注意和下一行的顺序
+                t.tree("unselect");
+                //判断node节点下是不是有childred？ 有：点击的是一个父级菜单
+                return;
+            }
+        },
+        onChange:function () {
+
+            //获取当前combotree的tree对象
+            var tree = $('#WorkType').combotree('tree');
+            //获取当前选中的节点
+            var data = tree.tree('getSelected');
+            var treeObj = $("#WorkType").combotree("tree");//先获取combotree的树对象
+            var s = treeObj.tree("getParent", data.target);
+
+            // console.log(s.text);
+            var value = $('#WorkType').combotree('getText');
+            var mark = jsonarray[value];
+            $("#Points").val(mark[0])
+            $("#Reward").val(mark[1])
+            if (s!=null && s.text=='重要出版社'){
+                $("#Press").val(value);
+                alert("系统将根据字数计算科研奖励，请如实填写");
+                $('#WorkType').combotree('setValue', '重要出版社');
+            }else{
+                $("#Press").val("");
+            }
+            if (value=='国家级规划教材'){
+                alert("系统将根据字数计算科研奖励，请如实填写");
+            }
+        }
+
+    });
+
+
+    var jsonarray = null;
+    $.getJSON("/approval/json/rewardAndPoints.json", function (data) {
+        jsonarray = data;
+    })
+
+    function judgereward() {
+        var zishu = $('#ZiShu').val();
+        var value = $('#WorkType').combotree('getText');
+
+        if (value=='重要出版社' || value=='国家级规划教材'){
+            var jiangjin = Math.floor(zishu)/100;
+            $("#Reward").val(jiangjin);
+        }
+    }
+
+
+</script>
+</body>
+
+</html>

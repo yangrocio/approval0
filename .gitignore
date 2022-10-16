@@ -1,0 +1,44 @@
+*.class
+*.log
+*.lock
+
+# Package Files #
+*.jar
+*.war
+*.ear
+target/
+
+# idea
+.idea/
+*.iml/
+
+*velocity.log*
+
+### STS ###
+.apt_generated
+.factorypath
+.springBeans
+
+### IntelliJ IDEA ###
+*.iml
+*.ipr
+*.iws
+<<<<<<< HEAD
+.idea/
+=======
+.idea
+>>>>>>> 104a407a9828d169d9f1cdc222c3b981ea09f8c4
+.classpath
+.project
+.settings/
+bin/
+
+*.log
+tem/
+
+#rebel
+<<<<<<< HEAD
+*rebel.xml*​
+=======
+*rebel.xml*
+>>>>>>> 104a407a9828d169d9f1cdc222c3b981ea09f8c4

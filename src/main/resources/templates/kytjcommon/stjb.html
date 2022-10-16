@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="school/schoolheader :: schoolheader"></div>
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-mini"><b>科研处</b></span>
+            <span class="logo-lg"><b>成果管理</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                </p>
+                            </li>
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()" class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()" class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div th:replace="school/schoolmenu:: schoolmenu"></div>
+        </section>
+    </aside>
+
+
+    <div class="content-wrapper">
+
+        <section class="content-header">
+            <h1>
+                统计表
+
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li><a href="#">统计表</a></li>
+            </ol>
+
+
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <!-- .box-body -->
+            <div class="box box-primary">
+                <div class="box-body">
+                    <!-- 数据表格 -->
+                    <div class="table-box">
+                        <!--工具栏-->
+                        <div class="pull-left">
+                            <input id="ex8" value="" type="text" class="slider form-control" data-slider-step="1"
+                                   data-slider-orientation="horizontal" data-slider-selection="before"
+                                   data-slider-tooltip="true" data-slider-id="red"  data-slider-sliderRange="true" data-slider-handle="triangle">
+                            <button type="button" class="btn btn-xs bg-olive" onclick="findtjb()"><i
+                                    class="fa fa-plus-square-o"></i>查询
+                            </button>
+                            <button type="button" class="btn btn-xs bg-olive" onclick='tjbexport()'><i
+                                    class="fa fa-trash-o"></i>导出Excel
+                            </button>
+
+
+                        </div>
+
+                        <table id="dataList" class="totable table table-bordered table-striped table-hover dataTable">
+                            <thead>
+                            <tr>
+                                <!--<th class="text-center">序号</th>-->
+                                <td class="text-center" width="4%">院系</td>
+                                <td class="text-center" width="3%">工号</td>
+                                <td class="text-center" width="3%">姓名</td>
+                                <!--<td class="text-center" width="4%">性别</td>-->
+                                <td class="text-center" width="3%">业绩点</td>
+                                <td class="text-center" width="3%">科研奖金(万)</td>
+                                <td class="text-center" width="3%">备注</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!--<tbody th:if="${pageInfo}!=null">-->
+                            <tr th:each="message:${tjbList}">
+                                <td th:text="${message.department}" class="txt" th:title="${message.department}"></td>
+                                <td th:text="${message.number}" class="txt"  th:title="${message.number}"></td>
+                                <td th:text="${message.name}" class="txt"  th:title="${message.name}"></td>
+                                <td th:text="${message.points}" class="txt"  th:title="${message.points}"></td>
+                                <td th:text="${message.reward}" class="txt"  th:title="${message.reward}"></td>
+                                <td th:text="${message.fq}" class="txt"  th:title="${message.fq}"></td>
+
+
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td style="float: right" class="txt">合计[[${total}]]条数据:</td>
+                                <td  th:text="${pointSum}" th:title="${pointSum}" class="txt"></td>
+                                <td  th:text="${rewardSum}" th:title="${rewardSum}" class="txt"></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </section>
+    </div>
+</div>
+<div th:replace="school/schoolfooter :: schoolfooter"></div>
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+
+    });
+
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+    setSidebarActive("tjb");
+
+    $(function () {
+        var mySlider = document.getElementById("ex8");
+        var date = new Date;
+        var year = date.getFullYear();
+
+        mySlider.dataset.sliderMax = year + 5;
+        mySlider.dataset.sliderMin = 2015;
+
+        var startyear = year;
+        // var endyear = year;
+        if (tempgetUrl("start")!=null){
+            console.log(tempgetUrl("start"))
+            var stastr = tempgetUrl("start").toString();
+            // var endstr = tempgetUrl("end").toString();
+            startyear = stastr.slice(0,4);
+            // endyear = endstr.slice(0,4);
+        }
+
+        // let nian = '['+startyear+","+endyear+']';
+        mySlider.dataset.sliderValue=startyear;
+        // mySlider.dataset.sliderValues=[2018,2020];
+        $('input.slider').bootstrapSlider();
+    });
+
+
+
+    function tempgetUrl(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+</script>
+</body>
+
+</html>

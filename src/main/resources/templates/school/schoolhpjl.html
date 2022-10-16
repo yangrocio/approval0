@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="school/schoolheader :: schoolheader"></div>
+
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-mini"><b>科研处</b></span>
+            <span class="logo-lg"><b>成果管理</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                </p>
+                            </li>
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()" class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()" class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div th:replace="school/schoolmenu:: schoolmenu"></div>
+
+        </section>
+    </aside>
+
+
+    <div class="content-wrapper">
+
+        <section class="content-header">
+            <h1>
+                获批奖励
+
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li><a href="#">获批奖励</a></li>
+            </ol>
+
+
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <!-- .box-body -->
+            <div class="box box-primary">
+                <div class="box-body">
+                    <!-- 数据表格 -->
+                    <div class="table-box">
+
+
+                        <!--工具栏-->
+                        <div class="pull-left ">
+                            <div class="form-group form-inline">
+                                    <button type="button" class="btn btn-xs bg-olive" onclick='shpjlshow()'><i
+                                            class="fa fa-pencil-square-o"></i>查看
+                                    </button>
+                                <span th:if="${session.USER_SESSION.roletype} eq '3'">
+                                    <button type="button" class="btn btn-xs bg-olive" onclick='shpjlupdate()'><i
+                                            class="fa  fa-pencil-square-o"></i>编辑
+                                    </button>
+                                <button type="button" class="btn btn-xs bg-olive" onclick='shpjldelete()'><i
+                                        class="fa  fa-pencil-square-o"></i>删除
+                                </button>
+                                    <button type="button" class="btn btn-xs bg-olive" onclick='ExcelCheckboxModal()'><i class="fa fa-save"></i>导出
+                                    </button>
+                                    <button type="button" class="btn btn-xs bg-olive" onclick="downloadshpjlfjsc()"><i
+                                            class="fa fa-arrow-circle-o-down"></i>批量下载附件
+                                    </button>
+                                        <button type="button" class="btn btn-xs bg-olive" onclick="passaudithpjl()"><i
+                                                class="fa fa-check"></i>通过
+                                        </button>
+                                        <button type="button" class="btn btn-xs btn-danger" onclick="passnoaudithpjl()"><i
+                                                class="fa  fa-remove"></i>不通过
+                                        </button>
+                                    <button type="button" class="btn btn-xs bg-olive" onclick='shpjlcheck()'><i
+                                            class="fa fa-pencil-square-o"></i>审核
+                                    </button>
+                                </span>
+                                <button type="button" class="btn btn-xs bg-olive" onclick='shpjlQueryModal()'><i
+                                        class="fa fa-pencil-square-o"></i>查询
+                                </button>
+                                <div class="modal fade bs-example-modal-lg" id="selectExcelshow" tabindex="-1"
+                                     role="dialog"
+                                     aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-hidden="true">
+                                                    &times;
+                                                </button>
+                                                <h4 class="modal-title">筛选/选择属性</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="tab-pane">
+                                                    <div class="row data-type">
+                                                        <div class="radio col-md-12"><label><input type="checkbox" id="ExcelAll" value="多选">多选</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="department">院系</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="number">工号</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="name">姓名</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="cgname">获奖成果名称</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="jlname">奖励名称</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="dyhjr">第一获奖人</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="qthjr">其它获奖人</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="jixdbm">奖励下达部门</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="zsnumber">证书编号</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="hjtime">获奖时间</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="jlrank">奖励等级</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="hjrank">获奖级别</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="points">业绩点</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="kyjl">科研奖励(万)</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="remark">备注</label></div>
+
+
+                                                        <div class="col-md-12 data text-center">
+                                                            <button type="button" class="btn bg-olive"
+                                                                    onclick="hpjlExcelDownload()">导出Excel
+                                                            </button>
+                                                            <button type="button" class="btn bg-olive"
+                                                                    onclick="ExcelCheckboxCancle()">取消
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="modal fade bs-example-modal-lg" id="hpjlshowmodal" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">数据展示</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="tab-pane">
+                                            <div class="row data-type">
+
+                                                <div class="col-md-2 title" >获奖成果名称</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="CGName2" disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title" >奖励名称</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="JLName2" disabled="disabled">
+
+
+
+                                                </div>
+
+                                                <div class="col-md-2 title" >第一获奖人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="DYHJR2" disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title" >其它获奖人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="QTHJR2"  disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title" >奖励下达部门</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="JIXDBM2" disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title" >证书编号</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="ZSNumber2" disabled="disabled">
+                                                </div>
+                                                <div class="col-md-2 title" >奖励等级</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="JLRank2" disabled="disabled">
+
+
+                                                </div>
+
+                                                <div class="col-md-2 title" >获奖级别</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="HJRank2" disabled="disabled">
+
+
+                                                </div>
+                                                <div class="col-md-2 title" >获奖时间</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control"  id="HJTime2"  disabled="disabled">
+                                                </div>
+
+
+                                                <div class="col-md-2 title" >科研奖励(万)</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="KYJL2" disabled="disabled">
+                                                </div>
+                                                <div class="col-md-2 title" >业绩点</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="Points2" disabled="disabled">
+                                                </div>
+                                                <div class="col-md-2 title" >备注</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="Remark2" disabled="disabled">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </div>
+                        <div class="modal fade bs-example-modal-lg" id="hpjlupdatemodal" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">数据展示</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="tab-pane">
+                                            <div class="row data-type">
+
+                                                <div class="col-md-2 title mast" >获奖成果名称</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="CGName">
+                                                    <input type="hidden" class="form-control"  id="hid">
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >奖励名称</div>
+                                                <div class="col-md-4 data">
+                                                    <input list="JLNameInput" id="JLName"  class="form-control">
+                                                    <datalist id="JLNameInput" class="form-control">
+                                                        <option>请选择</option>
+                                                        <option>河南省科技进步奖</option>
+                                                        <option>河南省自然科学学术论文奖</option>
+                                                        <option>河南省自然科学学术著作奖</option>
+                                                        <option>河南省社会科学优秀成果奖</option>
+                                                        <option>河南省教育厅优秀科技成果奖</option>
+                                                        <option>河南省教育厅优秀科技论文奖</option>
+                                                        <option>河南省教育厅人文社会科学研究优秀成果奖</option>
+                                                        <option>安阳市科技进步奖</option>
+                                                        <option>安阳市自然科学优秀论文奖</option>
+                                                        <option>安阳市社会科学规划课题获奖</option>
+                                                        <option>安阳市社会科学优秀成果奖</option>
+                                                        <option>安阳市新闻奖</option>
+                                                    </datalist>
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >第一获奖人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="DYHJR">
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >其它获奖人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="QTHJR" >
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >奖励下达部门</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="JIXDBM">
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >证书编号</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="ZSNumber">
+                                                </div>
+                                                <div class="col-md-2 title mast" >奖励等级</div>
+                                                <div class="col-md-4 data">
+                                                    <div id="JLRank" class="col-md-11"></div>
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >获奖级别</div>
+                                                <div class="col-md-4 data">
+
+                                                    <select id="HJRank" class="form-control">
+                                                        <option   >不以级区分</option>
+                                                        <option  >特等奖</option>
+                                                        <option >一等奖</option>
+                                                        <option >二等奖</option>
+                                                        <option >三等奖</option>
+                                                    </select>
+
+                                                </div>
+                                                <div class="col-md-2 title mast" >获奖时间</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control"  id="HJTime" >
+                                                </div>
+
+
+                                                <div class="col-md-2 title " >科研奖励(万)</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="number" class="form-control"  id="KYJL">
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >业绩点</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="number" class="form-control"  id="Points">
+                                                </div>
+                                                <div class="col-md-2 title" >备注</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="Remark">
+                                                </div>
+
+
+                                                <input type="text" class="form-control" id="judgestatusdisabled" style="display: none" >
+
+                                                <div class="col-md-12 data text-center">
+                                                    <button type="button" class="btn bg-maroon" onclick="hpjlupdatesubmit()">更新</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </div>
+
+                        <!--搜索弹窗-->
+                        <div class="modal fade bs-example-modal-lg" id="shpjlQueryModal" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <h4 class="modal-title">查询页面</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="tab-pane">
+                                            <div class="row data-type">
+                                                <div class="col-md-2 title mast">获奖成果名称</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="CGName9">
+                                                    <!--<input type="hidden" class="form-control" id="hid3">-->
+                                                </div>
+
+                                                <div class="col-md-2 title mast">奖励名称</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="JLName9">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">第一获奖人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="DYHJR9">
+                                                </div>
+
+
+                                                <div class="col-md-2 title mast">其他获奖人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="QTHJR9">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">奖励下达部门</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="JIXDBM9">
+                                                </div>
+
+
+                                                <div class="col-md-2 title mast" >奖励等级</div>
+                                                <div class="col-md-4 data">
+                                                    <select id="JLRank9" class="form-control">
+                                                        <option value=""></option>
+                                                        <option value="国家最高科学技术奖">国家最高科学技术奖</option>
+                                                        <option value="国家自然科学奖">国家自然科学奖</option>
+                                                        <option value="国家技术发明奖">国家技术发明奖</option>
+                                                        <option value="国家科学技术进步奖">国家科学技术进步奖</option>
+                                                        <option value="国家教学成果奖">国家教学成果奖</option>
+                                                        <option value="省部级科研成果奖">省部级科研成果奖</option>
+                                                        <option value="省部级教学成果奖">省部级教学成果奖</option>
+                                                        <option value="省自然科学学术奖">省自然科学学术奖</option>
+                                                        <option value="一般厅级奖励">一般厅级奖励</option>
+                                                    </select>
+                                                </div>
+
+
+
+                                                <div class="col-md-2 title mast">获奖时间</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control" id="HJTime9">
+                                                </div>
+
+
+                                                <!--<input type="text" class="form-control" id="FJSCdisabled3"-->
+                                                <!--style="display: none">-->
+                                                <!--<input type="text" class="form-control" id="judgestatusdisabled3"-->
+                                                <!--style="display: none">-->
+                                                <div class="col-md-12 data text-center">
+                                                    <button type="button"
+                                                            class="btn bg-maroon"
+                                                            onclick="goshpjlBydetail()">检索
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </div>
+
+                        <div class="box-tools pull-right">
+                                <table>
+                                    <tr>
+                                        <td>院系：</td>
+                                        <td>
+                                            <select id="department" class="form-control input-sm ">
+
+                                                <option value="-1" th:selected="-1==${department}">请选择</option>
+                                                <span th:each="de:${departments}">
+                                                <option th:value="${de.name}" th:text="${de.name}"
+                                                        th:selected="${de.name eq department}"></option>
+                                        </span>
+                                            </select>
+                                        </td>
+                                        <td>姓名：</td>
+                                        <td>
+                                            <input type="text" class="form-control input-sm " id="number"
+                                                   th:value="${number}">
+                                        </td>
+                                        <td>开始时间：</td>
+                                        <td>
+                                            <input type="date" class="form-control input-sm" id="start" th:value="${start}">
+                                        </td>
+                                        <td>结束时间：</td>
+                                        <td>
+                                            <input type="date" class="form-control  input-sm" id="end" th:value="${end}">
+                                        </td>
+                                        <td>审核状态：</td>
+                                        <td>
+                                            <select id="judgestatus" class="form-control">
+                                                <option value="-1" th:selected="-1==${judgestatus}">请选择</option>
+
+                                                <option value="2" th:selected="2==${judgestatus}">待学校审核</option>
+                                                <option value="3" th:selected="3==${judgestatus}">审核通过</option>
+
+                                                <option value="5" th:selected="5==${judgestatus}">学校退回</option>
+                                            </select>
+                                        </td>
+
+                                        <td>
+                                            <input type="text" style="display:none" class="form-control  input-sm" id="CGName8" th:value="${CGName}">
+                                        </td>
+                                        <td>
+                                            <input type="text" style="display:none" class="form-control  input-sm" id="JLName8" th:value="${JLName}">
+                                        </td>
+                                        <td>
+                                            <input type="text" style="display:none" class="form-control  input-sm" id="DYHJR8" th:value="${DYHJR}">
+                                        </td>
+                                        <td>
+                                            <input type="text" style="display:none" class="form-control  input-sm" id="QTHJR8" th:value="${QTHJR}">
+                                        </td>
+                                        <td>
+                                            <input type="text" style="display:none" class="form-control  input-sm" id="JIXDBM8" th:value="${JIXDBM}">
+                                        </td>
+                                        <td>
+                                            <input type="text" style="display:none" class="form-control  input-sm" id="JLRank8" th:value="${JLRank}">
+                                        </td>
+                                        <td>
+                                            <input type="text" style="display:none" class="form-control  input-sm" id="HJTime8" th:value="${HJTime}">
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-default" onclick="goshpjlBydetail()"><i class="fa fa-search"></i></button>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                        </div>
+                        <!--工具栏/-->
+
+
+                        <table id="dataList" class="totable table table-bordered table-striped table-hover dataTable">
+                            <thead>
+                            <tr>
+
+                                <th class="text-center" width="1%"><input type="checkbox" id="selall"
+                                                                          class="icheckbox_square-blue"></th>
+                                <td class="text-center" width="4%">院系</td>
+                                <td class="text-center" width="3%">填报人(工号)</td>
+                                <td class="text-center" width="4%">成果名称</td>
+                                <td class="text-center" width="4%">证书编号</td>
+                                <td class="text-center" width="4%">奖励名称</td>
+                                <td class="text-center" width="4%">第一作者</td>
+                                <td class="text-center" width="4%">奖励等级</td>
+                                <td class="text-center" width="4%">奖励级别</td>
+                                <td class="text-center" width="3%">业绩点</td>
+                                <td class="text-center" width="3%">科研奖励(万)</td>
+
+                                <td class="text-center" width="4%">获奖时间</td>
+                                <td class="text-center" width="5%">附件</td>
+                                <td class="text-center" width="4%">审核状态</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="hpjl:${pageInfo.list}">
+                                <td>
+                                    <input name="selected" type="checkbox" th:value="${hpjl.hid}">
+                                </td>
+                                <td th:text="${hpjl.department}" th:title="${hpjl.department}" class="txt"></td>
+                                <td th:text="${hpjl.name}+'('+${hpjl.number}+')'"  th:title="${hpjl.name}+'('+${hpjl.number}+')'"  class="txt"></td>
+                                <td th:text="${hpjl.cgname}"  th:title="${hpjl.cgname}"  class="txt"></td>
+                                <td th:text="${hpjl.zsnumber}"  th:title="${hpjl.zsnumber}"  class="txt"></td>
+                                <td th:text="${hpjl.jlname}"  th:title="${hpjl.jlname}"  class="txt"></td>
+                                <td th:text="${hpjl.dyhjr}"  th:title="${hpjl.dyhjr}"  class="txt"></td>
+                                <td th:text="${hpjl.jlrank}"  th:title="${hpjl.jlrank}"  class="txt"></td>
+                                <td th:text="${hpjl.hjrank}"  th:title="${hpjl.hjrank}"  class="txt"></td>
+                                <td th:text="${hpjl.points}"   th:title="${hpjl.points}"  class="txt"></td>
+                                <td th:text="${hpjl.kyjl}"  th:title="${hpjl.kyjl}"  class="txt"></td>
+
+                                <td th:text="${hpjl.hjtime}"  th:title="${hpjl.hjtime}"  class="txt"></td>
+                                <td name="fjsc" style="display: none" th:text="${hpjl.fjsc}"></td>
+                                <td>
+                                    <a class="btn btn-xs bg-olive" th:onclick="onlineshow([[${hpjl.fjsc}]])">预览</a>
+                                    <a class="btn btn-xs bg-olive" th:onclick="downloadfile([[${hpjl.fjsc}]])">下载</a>
+                                    <a class="btn btn-xs bg-olive"
+                                       th:onclick="showRetransmissionModal([[${hpjl.hid}]],
+                                       [[${hpjl.fjsc}]],'获批奖励',[[${hpjl.name}]],
+                                       [[${hpjl.number}]],[[${hpjl.department}]])">重传</a>
+                                </td>
+                                <td name="judgestatus" style="display: none" th:text="${hpjl.judgestatus}"></td>
+                                <!--审核显示部分 -->
+                                <!--th:text="${hylw.judgestatus}"-->
+                                <td>
+                                    <span th:switch="${hpjl.judgestatus}">
+                                        <p th:case="1">等待院系审核</p>
+                                        <p th:case="2">等待学校审核</p>
+                                        <p th:case="3">审核通过</p>
+                                        <p th:case="4">
+                                            <button class="btn btn-xs bg-olive"
+                                                    th:onclick="alert([[${hpjl.departmentopinion}]])">院系退回</button>
+                                        </p>
+                                        <p th:case="5">
+                                            <button class="btn btn-xs bg-olive"
+                                                    th:onclick="alert([[${hpjl.schoolopinion}]])">学校退回</button>
+                                        </p>
+                                        <p th:case="100">待完善</p>
+                                    </span>
+                                </td>
+
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal fade bs-example-modal-lg" id="retransmissionFile" tabindex="-1"
+                     role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                            <div class="modal-body">
+                                <div class="tab-pane">
+                                    <div class="row data-type">
+                                        <div class="col-md-12 title">核对信息</div>
+                                        <div class="col-md-2 title">编号</div>
+                                        <div class="col-md-4 data">
+                                            <input type="text" class="form-control" id="newid" disabled>
+                                        </div>
+                                        <div class="col-md-2 title">院系</div>
+                                        <div class="col-md-4 data">
+                                            <input type="text" class="form-control" id="newdepartment" disabled>
+                                        </div>
+                                        <div class="col-md-2 title">工号</div>
+                                        <div class="col-md-4 data">
+                                            <input type="text" class="form-control" id="newnumber" disabled>
+                                        </div>
+                                        <div class="col-md-2 title">姓名</div>
+                                        <div class="col-md-4 data">
+                                            <input type="text" class="form-control" id="newname" disabled>
+                                        </div>
+                                        <div class="col-md-2 title">类型</div>
+                                        <div class="col-md-4 data">
+                                            <input type="text" class="form-control" id="newtype" disabled>
+                                        </div>
+                                        <div class="col-md-2 title">老文件名称</div>
+                                        <div class="col-md-4 data">
+                                            <input type="text" class="form-control" id="newfjscname" disabled>
+                                        </div>
+                                        <div class="col-md-2 title">更新的文件</div>
+                                        <div class="col-md-10 data">
+                                            <input type="file" class="form-control" id="newfile" accept=".pdf">
+                                        </div>
+
+                                        <div class="col-md-12 data text-center">
+                                            <button type="button" class="btn  btn-success" onclick="retransmission()">
+                                                更新
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal -->
+                    </div>
+                </div>
+
+                <div class="modal-footer no-margin-top">
+                    <div class="col-md-6">
+                        当前第[[${pageInfo.pageNum}]]页,共 [[${pageInfo.pages}]] 页。一共[[${pageInfo.total}]]条记录
+                    </div>
+
+                    <ul class="pagination pull-right no-margin">
+                        <li th:if="${pageInfo.hasPreviousPage}">
+                            <a th:onclick="|javascript:goshpjlnext(1)|">首页</a>
+                        </li>
+
+
+                        <!--遍历条数-->
+                        <li th:each="nav:${pageInfo.navigatepageNums}">
+                            <a th:onclick="|javascript:goshpjlnext(${nav})|" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                            <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}"
+                                  th:text="${nav}"></span>
+                        </li>
+                        <li>
+                            <a th:onclick="|javascript:goshpjlnext(${pageInfo.pages})|">尾页</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</div>
+<div th:replace="school/schoolfooter :: schoolfooter"></div>
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+
+    });
+
+
+
+
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+
+    // 列表按钮   让按钮变大
+    $("#dataList td input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+    });
+    // 全选操作  全选操作
+    $("#selall").click(function() {
+        var clicks = $(this).is(':checked');
+        if (!clicks) {
+            $("#dataList td input[type='checkbox']").iCheck("uncheck");
+        } else {
+            $("#dataList td input[type='checkbox']").iCheck("check");
+        }
+        $(this).data("clicks", !clicks);
+    });
+
+    setSidebarActive("hpjl");
+    var firstTime = true;
+    $('#JLRank').combotree({
+        url: '/approval/json/hpjltree.json',
+        method: 'get',
+        width:'250px',
+        editable:true,
+        animate:true,
+        labelPosition:'top',
+        onBeforeSelect:function(node){
+            if(node.children){
+                //先封装成一个tree
+                var t = $('#JLRank').combotree('tree');
+                //然后使用toggle
+                t.tree('toggle',node.target);//注意和下一行的顺序
+                t.tree("unselect");
+                //判断node节点下是不是有childred？ 有：点击的是一个父级菜单
+                return;
+            }
+        },
+        onChange:function () {
+            if (firstTime) {
+                firstTime = false;
+                return;
+            }
+            var value = $('#JLRank').combotree('getText');
+            var mark = jsonarray[value];
+
+            if (value=='一般厅级奖励二等奖' || value=='一般厅级奖励三等奖'){
+                alert("教学研究型院系不计入业绩点");
+            }
+
+            $("#Points").val(mark[0])
+            $("#KYJL").val(mark[1])
+
+            if (value!='国家最高科学技术奖') {
+                var end = value.substring(value.length-3)
+                $("#HJRank").val(end)
+                $("#JLRank").combotree("setValue",value.slice(0,-3));
+            }else{
+                $("#HJRank").val("不以级区分");
+
+            }
+        }
+        <!--如果报错405，加上method:'get'即可-->
+    });
+
+
+
+    var jsonarray = null;
+    $.getJSON("/approval/json/rewardAndPoints.json", function (data) {
+        jsonarray = data;
+    })
+</script>
+</body>
+
+</html>

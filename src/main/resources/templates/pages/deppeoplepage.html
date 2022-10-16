@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div  th:replace="pages/common/aboutdepartment:: zschdepartmentheader"></div>
+
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>科研处</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>知识产权</b></span>
+        </a>
+
+
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                    <!--张猿猿 - 数据管理员-->
+                                </p>
+                            </li>
+
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()"  class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()"  class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <!-- 导航侧栏 -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <div  th:replace="pages/common/aboutdepartment:: zschdepartmentmenu"></div>
+
+        </section>
+    </aside>
+
+
+
+
+    <div class="content-wrapper">
+
+        <!-- 内容头部 -->
+        <section class="content-header">
+            <h1>
+                数据管理
+
+            </h1>
+
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <!-- .box-body -->
+            <div class="box box-primary">
+                <div class="box-body">
+
+                    <div class="form-group  form-inline pull-right">
+                        <label for="select_tea_id">教师工号:</label>
+                        <input id="select_tea_id" th:value="${id}" type="text" class="form-control " placeholder="请输入教师工号" style="margin-right: 10px">
+
+                        <label for="select_name">姓名：</label>
+                        <input id="select_name" th:value="${name}" type="text" class="form-control " placeholder="请输入教师姓名" style="margin-right: 10px">
+
+                        <button onclick="departmentPeoplePageByDetail()" id="select_where" class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
+                    </div>
+
+                    <!-- 数据表格 -->
+                    <div class="table-box">
+                        <!--数据列表-->
+                        <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+                            <thead>
+                            <tr>
+                                <th class="text-center">员工号</th>
+                                <th class="text-center">姓名</th>
+                                <th class="text-center">职称</th>
+                                <th class="text-center">电话</th>
+                                <th class="text-center">邮箱</th>
+<!--                                <th class="text-center">操作</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+
+
+                            <tr th:each="list:${pageInfo.list}">
+                                <td th:text="${list.number}"></td>
+                                <td th:text="${list.name}"></td>
+                                <td th:text="${list.profession}"></td>
+                                <td th:text="${list.telephone}"></td>
+                                <td th:text="${list.email}"></td>
+<!--                                <td>-->
+<!--                                    编辑-->
+<!--                                </td>-->
+                            </tr>
+                            </tbody>
+
+                        </table>
+                        <!--数据列表/-->
+                    </div>
+                    <!-- 数据表格 /-->
+
+                </div>
+
+
+
+                <div class="modal-footer no-margin-top">
+                    <div class="col-md-6">
+                        当前第[[${pageInfo.pageNum}]]页,共 [[${pageInfo.pages}]] 页。一共[[${pageInfo.total}]]条记录
+                    </div>
+
+                    <ul class="pagination pull-right no-margin">
+                        <li th:if="${pageInfo.hasPreviousPage}">
+                            <a th:onclick="|javascript:godepartPeopNext(1)|">首页</a>
+                        </li>
+                        <!--遍历条数-->
+                        <li th:each="nav:${pageInfo.navigatepageNums}">
+                            <a th:onclick="|javascript:godepartPeopNext(${nav})|" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+
+                            <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}" th:text="${nav}"></span>
+                        </li>
+                        <li>
+                            <a th:onclick="|javascript:godepartPeopNext(${pageInfo.pages})|">尾页</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </section>
+    </div>
+</div>
+
+
+<div  th:replace="pages/common/aboutdepartment:: zschdepartmentfooter"></div>
+
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+    });
+    setSidebarActive("rylb");
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+
+    // 列表按钮   让按钮变大
+    $("#dataList td input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+    });
+    // 全选操作  全选操作
+    $("#selall").click(function() {
+        var clicks = $(this).is(':checked');
+        if (!clicks) {
+            $("#dataList td input[type='checkbox']").iCheck("uncheck");
+        } else {
+            $("#dataList td input[type='checkbox']").iCheck("check");
+        }
+        $(this).data("clicks", !clicks);
+    });
+</script>
+</body>
+
+</html>

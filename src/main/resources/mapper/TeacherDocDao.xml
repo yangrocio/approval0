@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.TeacherDocDao">
+    <insert id="insertTeacherDoc" parameterType="com.aynu.bean.TeacherDoc">
+        insert into teacherdoc(tusername,tname,tcategory,tcategory2,tapply,tapplyname,tproject,tprojectid,
+        tprojectname,tsortname,tinventionname,tunitname,tphone,temail,tintroduce,tduty,tinventionname2,roletype,judgestatus,department,adate)
+        values(#{tusername},#{tname},#{tcategory},#{tcategory2},#{tapply},#{tapplyname},#{tproject},#{tprojectid},
+        #{tprojectname},#{tsortname},#{tinventionname},#{tunitname},#{tphone},#{temail},#{tintroduce},#{tduty},#{tinventionname2},#{roletype},
+        #{judgestatus},#{department},#{adate})
+    </insert>
+
+    <update id="dUpdateTeacherDoc" parameterType="com.aynu.dto.DepartmentSaveWrite">
+        update teacherdoc set
+        dunitopinion=#{dunitopinion},
+        dunitheadname=#{dunitheadname},
+        dunitchapter=#{dunitchapter},
+        ddate=#{ddate},
+        judgestatus=#{judge}
+        where tid=#{tid}
+    </update>
+
+    <update id="UpdateDocforTeacherAll" parameterType="com.aynu.bean.TeacherDoc">
+        update teacherdoc set
+        tname=#{tname},tcategory=#{tcategory},tcategory2=#{tcategory2},tapply=#{tapply},tapplyname=#{tapplyname},
+        tproject=#{tproject},tprojectid=#{tprojectid},tprojectname=#{tprojectname},tsortname=#{tsortname},tinventionname=#{tinventionname},tunitname=#{tunitname},
+        tphone=#{tphone},temail=#{temail},tintroduce=#{tintroduce},tduty=#{tduty},tinventionname2=#{tinventionname2},judgestatus=#{judgestatus},roletype=#{roletype},
+        adate=#{adate}
+        where tid=#{tid}
+    </update>
+
+
+
+    <update id="UpdateSchoolSure" parameterType="com.aynu.dto.SchoolSure">
+        update teacherdoc set
+        suretduty=#{suretduty},
+        sureapply=#{sureapply},
+        surename=#{surename},
+        surechapter=#{surechapter},
+        suredate=#{suredate},
+        judgestatus=#{judge}
+        where tid=#{tid}
+    </update>
+
+
+    <select id="selectUserInfoByDetail" resultType="com.aynu.bean.TeacherDoc">
+        select * from teacherdoc where judgestatus!=#{t1} and judgestatus!=#{t2} and
+        judgestatus!=#{t3} and judgestatus!=#{t4} and judgestatus!=#{t5} and judgestatus!=#{t6}
+        <if test="department!=null and department!=''">
+            and department = #{department}
+        </if>
+        <if test="teaid!=null and teaid!=''">
+            and tusername = #{teaid}
+        </if>
+        <if test="tea_name!=null and teaid!=''">
+            and tinventionname = #{tea_name}
+        </if>
+        order by tusername,judgestatus desc
+    </select>
+
+
+</mapper>

@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.TjbDao">
+
+    <select id="selectAll" resultType="Tjb">
+        select department as department,number as number,name as name ,sum(points) as points,sum(reward) as  reward from
+        (
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from hylw
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from qklw
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from xszz
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from hpxm s4
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from jxys
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from hxlx
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from hxxm
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from rjzz
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from hpzl
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+
+
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from xsch
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from xsjl
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+
+        select department,number,name,sum(points) as points,sum(cast(kyjl  as decimal(12,4))) as reward from hpjl
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from ymhj
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        union all
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from tyhj
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+
+        union all
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from cgzh
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+
+        union all
+        select department,number,name,sum(points) as points,sum(cast(reward as decimal(12,4))) as reward from zkjs
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+
+        union all
+        select department,number,principal,sum(point) as points,sum(cast(scientific as decimal(12,4))) as reward from tdgl
+        where judgestatus='3' and approved_time between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        group by number
+        )
+        as t group by department,number
+    </select>
+
+    <select id="getCountChart"   resultType="com.aynu.bean.CountChart">
+        SELECT SUM(c) AS COUNT,YEAR FROM (
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM hylw
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+
+        UNION ALL
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM qklw
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM xszz
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM hpxm
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+        union all
+
+
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM jxys
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM hxlx
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM hxxm
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM rjzz
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM hpzl
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM xsch
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM xsjl
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM hpjl
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM ymhj
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM tyhj
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM cgzh
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(systime) AS YEAR FROM zkjs
+        WHERE YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+
+        union all
+
+        SELECT COUNT(1) AS c,YEAR(approved_time) AS YEAR FROM tdgl
+        WHERE YEAR(approved_time) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(approved_time)
+        ) AS t GROUP BY year
+
+
+    </select>
+
+
+
+</mapper>

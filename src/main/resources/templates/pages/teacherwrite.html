@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div  th:replace="pages/common/aboutteacher:: zschteacherheader"></div>
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>科研处</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>知识产权</b></span>
+        </a>
+
+
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                </p>
+                            </li>
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()"  class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()"  class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <!-- 导航侧栏 -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li id="admin-index"><a href="#"><i class="fa fa-dashboard"></i> <span>首页</span></a></li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+
+    <div class="content-wrapper">
+
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <div class="box box-primary">
+
+
+                <div class="box-body">
+
+                    <!--基础控件-->
+                    <div class="tab-pane" id="tab-common" >
+                        <div class="row data-type">
+                            <!--<div  class="col-md-12 title"><span th:text="${notice}"></span></div>-->
+                            <div class="col-md-2 title" >名称<span style="color: red"> *</span></div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control"  id="tname">
+                            </div>
+
+
+                            <div class="col-md-2 title">类别<span style="color: red"> *</span></div>
+                            <div class="col-md-10 data line-height36">
+                                <div class="form-group form-inline">
+                                    <div class="radio"><label><input type="radio" name="tcategory" value="发明专利">
+                                        发明专利</label>
+                                    </div>
+                                    <div class="radio"><label><input type="radio" name="tcategory" value="实用新型专利">
+                                        实用新型专利</label></div>
+                                    <div class="radio"><label><input type="radio" name="tcategory" value="外观设计专利">
+                                        外观设计专利</label></div>
+                                    <div class="radio"><label><input type="radio" name="tcategory" value="软件著作权">
+                                        软件著作权</label></div>
+                                    <div class="radio"><label><input type="radio" name="tcategory" value="集成电路布图设计">
+                                        集成电路布图设计</label></div>
+                                    <div class="radio"><label><input type="radio" name="tcategory" value="其他">
+                                        其他</label></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 title rowHeight2x">申请方式<span style="color: red"> *</span></div>
+                            <div class="col-md-10 data rowHeight2x">
+                                <div class="form-group form-inline">
+                                    <div class="radio"><label><input id="special2" type="radio" name="tapply" value="自办">
+                                        自办</label></div>
+                                    <br>
+                                    <div class="radio"><label><input id="special" type="radio" name="tapply" value="代理">
+                                        代理
+                                        代理机构名称：<input type="text" class="form-control"  id="tapplyname">
+                                    </label></div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-2 title rowHeight3x"><p class="distancemid">知识产权<br>项目来源</p></div>
+                            <div class="col-md-10 data rowHeight3x">
+
+                                    <div class="col-md-2 title  ">项目类别：</div>
+                                    <div class="col-md-10 data ">
+                                            <label><input type="radio" name="tproject" value="纵向">
+                                            纵向</label>
+                                            <label><input type="radio" name="tproject" value="横向">
+                                            横向</label>
+                                    </div>
+
+                                    <div class="col-md-2 title  ">项目编号：</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control" id="tprojectid">
+                                    </div>
+                                    <div class="col-md-2 title">项目名称：</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control"  id="tprojectname">
+                                    </div>
+                            </div>
+
+                            <div class="col-md-2 title">发明人排序<span style="color: red"> *</span></div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" id="tsortname">
+                            </div>
+
+                            <div class="col-md-2 title">申请人<span style="color: red"> *</span></div>
+                            <div class="col-md-4 data text">
+                                <input type="text" class="form-control" th:value="${session.USER_SESSION.name}" id="tinventionname">
+                            </div>
+
+                            <div class="col-md-2 title">所在单位<span style="color: red"> *</span></div>
+                            <div class="col-md-4 data text">
+                                <select class="form-control" id="tunitname">
+                                    <span th:each="de:${departments}">
+                                        <option th:value="${de.name}" th:text="${de.name}" th:selected="${session.USER_SESSION.department==de.name}"></option>
+                                    </span>
+
+                                </select>
+                            </div>
+                            <div class="col-md-2 title">联系电话<span style="color: red"> *</span></div>
+                            <div class="col-md-4 data text">
+                                <input type="text" class="form-control"  id="tphone">
+                            </div>
+
+                            <div class="col-md-2 title">邮箱<span style="color: red"> *</span></div>
+                            <div class="col-md-4 data text">
+                                <input type="email" class="form-control" id="temail">
+                            </div>
+
+                            <div class="col-md-2 title editer " ><p class="distancemid2">拟申请知识产权<br></br>保护功能简介<span style="color: red"> *</span></p></div>
+                            <div class="col-md-10 data editer">
+                                <textarea class="form-control" rows="9" maxlength="145" placeholder="字数限制为145" id="tintroduce"></textarea>
+                                <div class="col-md-12 data">
+                                    <div class="form-group form-inline">
+                                        <div class="radio"><label><input type="radio" name="tduty" value="职务成果">
+                                            职务成果</label></div>
+                                        <div class="radio"><label><input type="radio" name="tduty" value="非职务成果">
+                                            非职务成果</label></div>
+                                        <div style="float: right">
+                                        申请人签名：<input type="text" class="form-control" th:value="${session.USER_SESSION.name}"  id="tinventionname2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 data text-center">
+                                <button type="button" class="btn bg-maroon" id="tsave">提交</button>
+                                <button type="button" class="btn bg-maroon" id="ttempsave">暂存</button>
+                                <button type="button" class="btn bg-default" onclick="history.back(-1);">返回</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--基础控件/-->
+
+                </div>
+            </div>
+
+        </section>
+        <!-- 正文区域 /-->
+
+    </div>
+    <!-- @@close -->
+    <!-- 内容区域 /-->
+
+
+
+</div>
+
+
+<div  th:replace="pages/common/aboutteacher:: zschteacherfooter"></div>
+
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+    });
+
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+    $(document).ready(function () {
+        setSidebarActive("admin-blank");
+    });
+</script>
+</body>
+
+
+
+</html>

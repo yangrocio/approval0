@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div  th:replace="pages/common/aboutteacher:: zschteacherheader"></div>
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-mini"><b>科研处</b></span>
+            <span class="logo-lg"><b>知识产权</b></span>
+        </a>
+
+
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                </p>
+                            </li>
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()"  class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()"  class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <!-- 导航侧栏 -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="header">菜单</li>
+                <li id="admin-index"><a href="#"><i class="fa fa-dashboard"></i> <span>首页</span></a>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <!-- 导航侧栏 /-->
+
+    <!-- 内容区域 -->
+    <!-- @@master = admin-layout.html-->
+    <!-- @@block = content -->
+
+    <div class="content-wrapper">
+
+        <!-- 内容头部 -->
+        <section class="content-header">
+            <h1>
+                数据展示
+
+            </h1>
+
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <div class="box box-primary">
+
+
+                <div class="box-body">
+
+                    <!--基础控件-->
+                    <div class="tab-pane" id="tab-common">
+                        <div class="row data-type">
+                            <div class="col-md-2 title">名称<span style="color: red"> *</span></div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" th:value="${teacherDoc.tname}" id="tname">
+                                <input type="text" th:value="${teacherDoc.tid}" hidden="hidden" id="tid">
+                            </div>
+
+
+                            <div class="col-md-2 title">类别<span style="color: red"> *</span></div>
+                            <div class="col-md-10 data line-height36">
+                                <div class="form-group form-inline">
+                                    <div class="radio"><label><input type="radio" name="tcategory" th:field="${teacherDoc.tcategory}" value="发明专利">发明专利</label></div>
+                                    <div class="radio"><label><input type="radio" name="tcategory" th:field="${teacherDoc.tcategory}" value="实用新型专利">实用新型专利</label></div>
+                                    <div class="radio"><label><input type="radio" name="tcategory" th:field="${teacherDoc.tcategory}" value="外观设计专利">外观设计专利</label></div>
+                                    <div class="radio"><label><input type="radio" name="tcategory" th:field="${teacherDoc.tcategory}" value="软件著作权">软件著作权</label></div>
+                                    <div class="radio"><label><input type="radio" name="tcategory" th:field="${teacherDoc.tcategory}" value="集成电路布图设计">集成电路布图设计</label></div>
+                                    <div class="radio"><label><input type="radio" name="tcategory" th:field="${teacherDoc.tcategory}" value="其他">其他</label></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 title rowHeight2x">申请方式<span style="color: red"> *</span></div>
+                            <div class="col-md-10 data rowHeight2x">
+                                <div class="form-group form-inline">
+                                    <div class="radio"><label><input id="special2" type="radio" name="tapply"
+                                                                     th:field="${teacherDoc.tapply}" value="自办">
+                                        自办</label></div>
+                                    <br>
+                                    <div class="radio"><label><input id="special" type="radio" name="tapply"
+                                                                     th:field="${teacherDoc.tapply}" value="代理">
+                                        代理
+                                        代理机构名称：<input type="text" class="form-control"
+                                                      th:field="${teacherDoc.tapplyname}" id="tapplyname">
+                                    </label></div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-2 title rowHeight3x"><p class="distancemid">知识产权<br>项目来源</p></div>
+                            <div class="col-md-10 data rowHeight3x">
+
+                                    <div class="col-md-2 title  ">项目类别：</div>
+                                    <div class="col-md-10 data ">
+                                       <label><input type="radio" name="tproject"
+                                                                         th:field="${teacherDoc.tproject}" value="纵向">
+                                            纵向</label>
+                                       <label><input type="radio" name="tproject"
+                                                                         th:field="${teacherDoc.tproject}" value="横向">
+                                            横向</label>
+                                    </div>
+
+                                    <div class="col-md-2 title  ">项目编号：</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control"
+                                               th:field="${teacherDoc.tprojectid}" id="tprojectid">
+                                    </div>
+                                    <div class="col-md-2 title">项目名称：</div>
+                                    <div class="col-md-10 data">
+                                        <input type="text" class="form-control"
+                                               th:field="${teacherDoc.tprojectname}" id="tprojectname">
+                                    </div>
+                            </div>
+
+                            <div class="col-md-2 title">发明人排序<span style="color: red"> *</span></div>
+                            <div class="col-md-10 data">
+                                <input type="text" class="form-control" th:field="${teacherDoc.tsortname}"
+                                       id="tsortname">
+                            </div>
+
+                            <div class="col-md-2 title">申请人<span style="color: red"> *</span></div>
+                            <div class="col-md-4 data text">
+                                <input type="text" class="form-control" th:field="${teacherDoc.tinventionname}"
+                                       id="tinventionname">
+                            </div>
+
+                            <div class="col-md-2 title">所在单位<span style="color: red"> *</span></div>
+                            <div class="col-md-4 data text">
+                                <select class="form-control" id="tunitname" >
+                                    <span th:each="de:${departments}">
+                                        <option th:value="${de.name}" th:text="${de.name}" th:selected="${de.name eq teacherDoc.tunitname}"></option>
+                                    </span>
+
+                                </select>
+
+                                <!--<input type="text" class="form-control"th:field="${teacherDoc.tunitname}" -->
+                                       <!--id="tunitname">-->
+                            </div>
+                            <div class="col-md-2 title">联系电话<span style="color: red"> *</span></div>
+                            <div class="col-md-4 data text">
+                                <input type="text" class="form-control" th:field="${teacherDoc.tphone}"
+                                       id="tphone">
+                            </div>
+
+                            <div class="col-md-2 title">邮箱<span style="color: red"> *</span></div>
+                            <div class="col-md-4 data text">
+                                <input type="email" class="form-control" th:field="${teacherDoc.temail}"
+                                       id="temail">
+                            </div>
+
+                            <div class="col-md-2 title editer "><p class="distancemid2">拟申请知识产权<br></br>保护功能简介<span style="color: red"> *</span></p></div>
+                            <div class="col-md-10 data editer">
+                                <textarea class="form-control" rows="9" th:field="${teacherDoc.tintroduce}" maxlength="145" placeholder="字数限制为145"
+                                          id="tintroduce"></textarea>
+                                <div class="col-md-12 data">
+                                    <div class="form-group form-inline">
+                                        <div class="radio"><label><input type="radio" th:field="${teacherDoc.tduty}" name="tduty" value="职务成果">职务成果</label></div>
+                                        <div class="radio"><label><input type="radio" th:field="${teacherDoc.tduty}" name="tduty" value="非职务成果">非职务成果</label></div>
+                                        <div style="float: right">
+                                            申请人签名：<input type="text" class="form-control"
+                                                         th:field="${teacherDoc.tinventionname2}" id="tinventionname2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-2 title editer " style="padding-top: 100px">申请人所在单位意见<span style="color: red"> *</span></div>
+                            <div class="col-md-10 data editer">
+                                <textarea class="form-control" disabled th:field="${teacherDoc.dunitopinion}"
+                                          rows="9"></textarea>
+                                <div class="col-md-4 data">
+                                    <div class="form-group form-inline">
+                                        <div>
+                                            负责人签字：<input type="text" class="form-control" disabled
+                                                         th:value="${teacherDoc.dunitheadname}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 data">
+                                    <div class="form-group form-inline">
+                                        <div>
+                                            单位盖章：<input type="text" class="form-control" disabled
+                                                        th:value="${teacherDoc.dunitchapter}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 data">
+                                    <div class="form-group form-inline">
+                                        日期：
+                                        <div class="input-group date">
+                                            <!--<input type="text" class="form-control pull-right" disabled-->
+                                                   <!--th:value="${#dates.format(teacherDoc.ddate, 'yyyy-MM-dd')}">-->
+                                            <input type="text" class="form-control pull-right" disabled  th:value="${(teacherDoc.ddate)}" >
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-2 title " style="height: 220px ;padding-top: 100px">科研处意见<span style="color: red"> *</span></div>
+                            <div class="col-md-10 data " style="height: 220px">
+                                <div class="col-md-2 title  rowHeight2x">成果类型：</div>
+                                <div class="col-md-10 data rowHeight2x">
+                                    <div class="radio"><label><input type="radio" name="suretduty" disabled
+                                                                     th:field="${teacherDoc.suretduty}" value="职务成果">职务成果</label>
+                                    </div>
+                                    <div class="radio"><label><input type="radio" name="suretduty" disabled
+                                                                     th:field="${teacherDoc.suretduty}" value="非职务成果">非职务成果</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 title rowHeight2x">是否同意申报：</div>
+                                <div class="col-md-10 data rowHeight2x">
+                                    <div class="radio"><label><input type="radio" name="sureapply" disabled
+                                                                     th:field="${teacherDoc.sureapply}"
+                                                                     value="是">是</label></div>
+                                    <div class="radio"><label><input type="radio" name="sureapply" disabled
+                                                                     th:field="${teacherDoc.sureapply}"
+                                                                     value="否">否</label></div>
+                                </div>
+                                <div class="col-md-4 data">
+                                    <div class="form-group form-inline">
+                                        <div>
+                                            负责人签字：<input type="text" class="form-control" disabled
+                                                         th:value="${teacherDoc.surename}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 data">
+                                    <div class="form-group form-inline">
+                                        <div>
+                                            科研处盖章：<input type="text" class="form-control" disabled
+                                                         th:value="${teacherDoc.surechapter}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 data">
+                                    <div class="form-group form-inline">
+                                        日期：
+                                        <div class="input-group date">
+
+                                            <input type="text" class="form-control pull-right" disabled  th:value="${(teacherDoc.suredate)}" >
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12 data text-center">
+                                <span th:if=" ${teacherDoc.judgestatus eq '4' or
+                                            teacherDoc.judgestatus eq '5' or
+                                            teacherDoc.judgestatus eq '100'}">
+                                    <button type="button" class="btn bg-maroon" id="disable_save">提交</button>
+                                    <!--<button type="button" class="btn bg-maroon" id="temp_disable_save">暂存</button>-->
+                                </span>
+
+                                <span th:if="${teacherDoc.judgestatus eq '1' or teacherDoc.judgestatus eq '2' or teacherDoc.judgestatus eq '3'}">
+                                    <button  disabled  type="button" class="btn bg-maroon">提交</button>
+                                </span>
+                                <button type="button" class="btn bg-default" onclick="history.back(-1);">返回</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--基础控件/-->
+
+                </div>
+            </div>
+
+        </section>
+        <!-- 正文区域 /-->
+
+    </div>
+    <!-- @@close -->
+    <!-- 内容区域 /-->
+
+
+</div>
+<div  th:replace="pages/common/aboutteacher:: zschteacherfooter"></div>
+
+
+
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+    });
+
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+    $(document).ready(function () {
+        setSidebarActive("admin-blank");
+    });
+</script>
+</body>
+
+
+</html>

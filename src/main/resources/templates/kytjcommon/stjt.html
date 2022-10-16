@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="school/schoolheader :: schoolheader"></div>
+    <link rel="stylesheet" th:href="@{/plugins/morris/morris.css}">
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-mini"><b>科研处</b></span>
+            <span class="logo-lg"><b>成果管理</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                </p>
+                            </li>
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()" class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()" class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div th:replace="school/schoolmenu:: schoolmenu"></div>
+        </section>
+    </aside>
+
+
+    <div class="content-wrapper">
+
+        <section class="content-header">
+            <h1>
+                统计图
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li><a href="#">统计图</a></li>
+            </ol>
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <!-- .box-body -->
+            <div class="box box-primary">
+                <div class="box-body">
+                    <!-- 数据表格 -->
+                    <div class="table-box">
+
+
+                        <!--工具栏-->
+
+
+                        <section class="content">
+                            <div class="row">
+                                <div class="box-tools pull-right">
+                                    <table>
+                                        <tr>
+                                            <td>查询类型：</td>
+                                            <td>
+                                                <select id="selecttype" class="form-control input-sm ">
+                                                    <option value="全部">全部</option>
+                                                    <option value="hylw">会议论文</option>
+                                                    <option value="qklw">期刊论文</option>
+                                                    <option value="xszz">学术著作</option>
+                                                    <option value="hpxm">获批项目</option>
+                                                    <option value="jxys">结项验收</option>
+                                                    <option value="hxlx">横向立项</option>
+                                                    <option value="hxxm">横向结项</option>
+                                                    <option value="rjzz">软件著作</option>
+                                                    <option value="hpzl">获批专利</option>
+                                                    <option value="xsch">学术称号</option>
+                                                    <option value="xsjl">学术交流</option>
+                                                    <option value="hpjl">获批奖励</option>
+                                                    <option value="ymhj">音美获奖</option>
+                                                    <option value="tyhj">体育获奖</option>
+                                                    <option value="zkjs">智库建设</option>
+                                                    <option value="cgzh">成果转化</option>
+                                                </select>
+                                            </td>
+                                            <td>院系：</td>
+                                            <td>
+                                                <select id="department" class="form-control input-sm ">
+                                                    <option>全部院系</option>
+                                                    <span th:each="de:${departments}">
+                                                <option th:value="${de.name}" th:text="${de.name}"
+                                                        th:selected="${de.name eq department}"></option>
+                                                </span>
+                                                </select>
+                                            </td>
+
+                                            <td>起始：</td>
+                                            <td>
+                                                <select id="yearstart" class="form-control input-sm ">
+
+                                                </select>
+
+                                            </td>
+                                            <td>终止：</td>
+                                            <td>
+                                                <select id="yearend" class="form-control input-sm ">
+
+                                                </select>
+                                            </td>
+
+                                            <td>
+                                                <button type="button" class="btn btn-default"
+                                                        onclick="getCountChart()"><i
+                                                        class="fa fa-search"></i>
+                                                </button>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <!-- AREA CHART -->
+                                    <div class="box box-primary">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">折线图</h3>
+                                        </div>
+
+                                        <div class="box-body">
+                                            <div class="chart" id="areachartshow">
+                                                <canvas id="areaChart" style="height:250px"></canvas>
+
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+
+
+                                <div class="box-tools pull-right">
+                                    <table>
+                                        <tr>
+                                            <td>查询类型：</td>
+                                            <td>
+                                                <select id="selecttypebar" class="form-control input-sm ">
+
+                                                    <option value="hylw">会议论文</option>
+                                                    <option value="qklw">期刊论文</option>
+                                                    <option value="xszz">学术著作</option>
+                                                    <option value="hpxm">获批项目</option>
+                                                    <option value="jxys">结项验收</option>
+                                                    <option value="hxlx">横向立项</option>
+                                                    <option value="hxxm">横向结项</option>
+                                                    <option value="rjzz">软件著作</option>
+                                                    <option value="hpzl">获批专利</option>
+                                                    <option value="xsch">学术称号</option>
+                                                    <option value="xsjl">学术交流</option>
+                                                    <option value="hpjl">获批奖励</option>
+                                                    <option value="ymhj">音美获奖</option>
+                                                    <option value="tyhj">体育获奖</option>
+                                                    <option value="zkjs">智库建设</option>
+                                                    <option value="cgzh">成果转化</option>
+                                                </select>
+                                            </td>
+                                            <td>院系：</td>
+                                            <td>
+                                                <select id="department2" class="form-control input-sm ">
+                                                    <option>全部院系</option>
+                                                    <span th:each="de:${departments}">
+                                                <option th:value="${de.name}" th:text="${de.name}"
+                                                        th:selected="${de.name eq department}"></option>
+                                                </span>
+                                                </select>
+                                            </td>
+                                            <td>年份</td>
+                                            <td>
+                                                <select id="yearbar" class="form-control input-sm ">
+                                                    <!--<option>2020</option>-->
+                                                    <!--<option>2019</option>-->
+                                                    <!--<option>2018</option>-->
+                                                    <!--<option>2017</option>-->
+                                                    <!--<option>2016</option>-->
+                                                    <!--<option>2015</option>-->
+                                                </select>
+                                            </td>
+
+                                            <td>
+                                                <button type="button" class="btn btn-default"
+                                                        onclick="getSDepartmentBarChart()"><i
+                                                        class="fa fa-search"></i>
+                                                </button>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                    <!-- BAR CHART -->
+                                    <div class="box box-success">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">院系排序饼(按照年份+查询类型对院系排序)</h3>
+
+                                            <div class="box-body">
+                                                <div class="chart " id="piechartshow">
+                                                    <div class="col-md-6" id="pie1">
+                                                        <canvas id="pieChart" class="col-md-5" style="height:250px;float: left"></canvas>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                    <div class="col-md-6">
+
+                                        <!-- BAR CHART -->
+                                        <div class="box box-success">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">教师排序图(按照年份+查询类型对教师排序)</h3>
+                                                <div class="box-body">
+                                                    <div class="chart" id="barchartshow2">
+                                                        <div class="col-md-6" id="pie2">
+                                                            <canvas id="pieChart2" class="col-md-5" style="height:250px;float: right;"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- /.box-body -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                        </section>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+    </div>
+</div>
+<script th:src="@{/plugins/chartjs/Chart.min.js}"></script>
+
+<div th:replace="school/schoolfooter :: schoolfooter"></div>
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+
+    });
+
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+    setSidebarActive("tjt");
+
+    let yearAsc = "";
+    for (var i = 2015;i<=new Date().getFullYear();i++){
+        yearAsc = yearAsc+ '<option>'+i+'</option>'
+    }
+
+    $("#yearstart").append(yearAsc);
+    // console.log(yearAsc);
+    let yearDesc="";
+    for (var i = new Date().getFullYear();i>=2015;i--){
+        yearDesc = yearDesc+ '<option>'+i+'</option>'
+    }
+    $("#yearend").append(yearDesc);
+    $("#yearbar").append(yearDesc);
+
+    function getCountChart() {
+        var yearstart = $("#yearstart").val()
+        var yearend = $("#yearend").val()
+        var department = $("#department").val()
+        var selecttype = $("#selecttype").val()
+        $.ajax({
+            url: httptod + "tjt/getCountChart",
+            type: "post",
+            data: {
+                department: department, selecttype: selecttype, yearstart: yearstart, yearend: yearend
+            },
+            dataType: "json",
+            success: function (res) {
+                $('#areaChart').remove();
+                $('#areachartshow').append(' <canvas id="areaChart" style="height:250px"></canvas>');
+                let areaChartData = {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: "Digital Goods",
+                            fillColor: "rgba(60,141,188,0.9)",
+                            strokeColor: "rgba(60,141,188,0.8)",
+                            pointColor: "#3b8bba",
+                            pointStrokeColor: "rgba(60,141,188,1)",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(60,141,188,1)",
+                            data: []
+                        }
+                    ]
+                };
+                for (let i = 0; i < res.length; i++) {
+                    // console.log(res[i].year)
+                    // console.log(res[i].count)
+                    areaChartData.labels.push(res[i].year)
+                    areaChartData.datasets[0].data.push(res[i].count)
+                }
+
+                let areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+                // This will get the first returned node in the jQuery collection.
+                let areaChart = new Chart(areaChartCanvas);
+                // console.log(res)
+                let areaChartOptions = {
+                    showScale: true,
+                    scaleShowGridLines: false,
+                    scaleGridLineColor: "rgba(0,0,0,.05)",
+                    scaleGridLineWidth: 1,
+                    scaleShowHorizontalLines: true,
+                    scaleShowVerticalLines: true,
+                    bezierCurve: true,
+                    bezierCurveTension: 0.3,
+                    pointDot: false,
+                    pointDotRadius: 4,
+                    pointDotStrokeWidth: 1,
+                    pointHitDetectionRadius: 20,
+                    datasetStroke: true,
+                    datasetStrokeWidth: 2,
+                    datasetFill: true,
+                    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+                    maintainAspectRatio: true,
+                    responsive: true
+                };
+
+                areaChart.Line(areaChartData, areaChartOptions);
+
+            },
+            error: function (res) {
+                console.log(res)
+            }
+        })
+    }
+
+
+    function getSDepartmentBarChart() {
+        var year = $("#yearbar").val()
+        var department = $("#department2").val()
+        var selecttype = $("#selecttypebar").val()
+        $.ajax({
+            url: httptod + "tjt/getSDepartmentBarChart",
+            type: "post",
+            data: {
+                selecttype: selecttype, year: year,department:department
+            },
+            dataType: "json",
+            success: function (res) {
+                $('#pieChart').remove();
+                $('#pieChart2').remove();
+
+                $('#pie1').append(' <canvas id="pieChart" class="col-md-5" style="height:250px;float: left"></canvas>');
+                $('#pie2').append('<canvas id="pieChart2" class="col-md-5" style="height:250px;float: right;"></canvas>');
+
+                let department_Chart = res.barChartDepartments
+
+
+                var PieData = [];
+
+
+                for (let i = 0; i <department_Chart.length; i++) {
+                    let temp = new Object();
+                    temp.value = department_Chart[i].sum;
+                    temp.label = department_Chart[i].department;
+                    PieData.push(temp);
+                }
+                var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+                var pieChart = new Chart(pieChartCanvas);
+                var pieOptions = {
+                    segmentShowStroke: true,
+                    segmentStrokeColor: "#fff",
+                    segmentStrokeWidth: 2,
+                    percentageInnerCutout: 50, // This is 0 for Pie charts
+                    animationSteps: 100,
+                    animationEasing: "easeOutBounce",
+                    animateRotate: true,
+                    animateScale: false,
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+                };
+                pieChart.Doughnut(PieData, pieOptions);
+
+                var pieData2 = [];
+                let teacher_Chart = res.barChartTeachers
+
+                if (department_Chart.length == 0  ||teacher_Chart.length == 0 ) {
+                    alert("本年度无数据可查");
+                }
+
+                for (let i = 0; i <teacher_Chart.length; i++) {
+                    let temp = new Object();
+                    temp.value = teacher_Chart[i].sum;
+                    temp.label = teacher_Chart[i].name+teacher_Chart[i].number;
+                    pieData2.push(temp);
+                }
+                var pieChartCanvas2 = $("#pieChart2").get(0).getContext("2d");
+                var pieChart2 = new Chart(pieChartCanvas2);
+                pieChart2.Doughnut(pieData2, pieOptions);
+            },
+            error: function (res) {
+                console.log(res)
+            }
+        })
+    }
+
+
+
+
+
+</script>
+</body>
+
+</html>

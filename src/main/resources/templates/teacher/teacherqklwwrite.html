@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="teacher/teacherheader :: teacherheader"></div>
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-mini"><b>科研处</b></span>
+            <span class="logo-lg"><b>成果管理</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                </p>
+                            </li>
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()" class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()" class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+
+
+            <div th:replace="teacher/teachermenu :: teachermenu"></div>
+
+
+        </section>
+    </aside>
+
+
+    <div class="content-wrapper">
+
+        <section class="content-header">
+            <h1>
+                期刊论文
+
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li><a href="#">期刊论文</a></li>
+            </ol>
+
+
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <div class="box box-primary">
+
+
+                <div class="box-body">
+
+                    <!--基础控件-->
+                    <div class="tab-pane" id="tab-common">
+                        <div class="row data-type">
+
+                            <div class="col-md-2 title mast">题目</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="TiMu">
+                            </div>
+
+                            <div class="col-md-2 title mast">第一作者</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="DYZZ">
+                            </div>
+
+                            <div class="col-md-2 title mast">其它作者</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="QTZZ">
+                            </div>
+
+                            <div class="col-md-2 title mast">奖励类别</div>
+                            <div class="col-md-4 data" style="overflow:hidden;">
+                                <div id="Type" class="col-md-11"></div>
+
+                            </div>
+
+
+                            <div class="col-md-2 title mast">发表期刊</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="QiKanName">
+                            </div>
+
+                            <div class="col-md-2 title mast">卷期号</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="JQNumber">
+                            </div>
+
+                            <div class="col-md-2 title mast">页码</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="Page">
+                            </div>
+
+                            <div class="col-md-2 title mast">发表时间</div>
+                            <div class="col-md-4 data">
+                                <input type="date" class="form-control" id="Time">
+                            </div>
+
+                            <!--<div class="col-md-2 title">论文级别</div>-->
+                            <!--<div class="col-md-4 data">-->
+                                <!--<div id="Rank" class="col-md-11"></div>-->
+                            <!--</div>-->
+
+
+                            <div class="col-md-2 title mast">字数(千)</div>
+                            <div class="col-md-4 data">
+                                <input id="ZiShu" class="form-control"
+                                       onkeyup="this.value=this.value.replace(/\D/g,'')"
+                                       onafterpaste="this.value=this.value.replace(/\D/g,'')">
+
+                            </div>
+
+                            <div class="col-md-2 title">科研奖励(万)</div>
+                            <div class="col-md-4 data">
+                                <input type="number" class="form-control" id="Reward">
+                            </div>
+
+                            <div class="col-md-2 title mast">业绩点</div>
+                            <div class="col-md-4 data">
+                                <input id="Points" class="form-control"
+                                       onkeyup="this.value=this.value.replace(/\D/g,'')"
+                                       onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                            </div>
+
+                            <div class="col-md-2 title mast">分区</div>
+                            <div class="col-md-4 data">
+                                <select id="FQ" class="form-control">
+                                    <option>无</option>
+                                    <option>一区论文</option>
+                                    <option>二区论文</option>
+                                    <option>三区论文</option>
+                                    <option>四区论文</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2 title">影响因子</div>
+                            <div class="col-md-4 data">
+                                <input class="form-control" id="YXYZ" onkeyup="if(isNaN(value))execCommand('undo')"
+                                       onafterpaste="if(isNaN(value))execCommand('undo')">
+                            </div>
+
+                            <div class="col-md-2 title">备注</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="remark">
+                            </div>
+
+                            <div class="col-md-2 title mast">附件上传</div>
+                            <div class="col-md-4 data">
+                                <input type="file" class="form-control" id="FJSC" accept=".pdf">
+                            </div>
+
+
+                            <div class="col-md-12 data text-center">
+                                <button type="button" class="btn bg-maroon" onclick="putqklw()">提交</button>
+                                <!--<button type="button" class="btn bg-maroon" onclick="">暂存</button>-->
+                                <button type="button" class="btn bg-default" onclick="history.back(-1);">返回</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--基础控件/-->
+
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<div th:replace="teacher/teacherfooter :: teacherfooter"></div>
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+    });
+    setSidebarActive("qklw");
+
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+
+    // 列表按钮   让按钮变大
+    $("#dataList td input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+    });
+    // 全选操作  全选操作
+    $("#selall").click(function () {
+        var clicks = $(this).is(':checked');
+        if (!clicks) {
+            $("#dataList td input[type='checkbox']").iCheck("uncheck");
+        } else {
+            $("#dataList td input[type='checkbox']").iCheck("check");
+        }
+        $(this).data("clicks", !clicks);
+    });
+
+    // $('#Rank').combotree({
+    //     url: '/approval/json/qklwtree2.json',
+    //     method: 'get',
+    //     width: '100%',
+    //     editable: true,
+    //     animate: true,
+    //     labelPosition: 'top',
+    // });
+
+    $('#QiKanName').combotree({
+        url: '/approval/json/qklwtreesNull.json',
+        method: 'get',
+        width: '100%',
+        editable: true,
+        animate: true,
+        labelPosition: 'top'
+    })
+    $('#Type').combotree({
+        url: '/approval/json/qklwtrees.json',
+        method: 'get',
+        width: '100%',
+        editable: true,
+        animate: true,
+        labelPosition: 'top',
+        onBeforeSelect: function (node) {
+            if (node.children) {
+                //先封装成一个tree
+                var t = $('#Type').combotree('tree');
+                //然后使用toggle
+                t.tree('toggle', node.target);//注意和下一行的顺序
+                t.tree("unselect");
+                //判断node节点下是不是有childred？ 有：点击的是一个父级菜单
+                return;
+            }
+        },
+        onChange: function () {
+            var value = $('#Type').combotree('getText');
+            if (value.startsWith("SCI")){
+                //是以sci开头的
+                $("#FQ").val(value.slice(3));
+            }else {
+                //不是以sci开头的
+                $("#FQ").val("无");
+            }
+            if (value=="人文社科一级顶尖期刊"){
+                $('#QiKanName').combotree({
+                    url: '/approval/json/qklwtreesYiji.json',
+                    method: 'get',
+                    width: '100%',
+                    editable: true,
+                    animate: true,
+                    labelPosition: 'top'
+                })
+            }else if (value=="人文社科权威期刊"){
+                $('#QiKanName').combotree({
+                    url: '/approval/json/qklwtreesQuanwei.json',
+                    method: 'get',
+                    width: '100%',
+                    editable: true,
+                    animate: true,
+                    labelPosition: 'top',
+                    onBeforeSelect: function (node) {
+                        if (node.children) {
+                            //先封装成一个tree
+                            var t = $('#QiKanName').combotree('tree');
+                            //然后使用toggle
+                            t.tree('toggle', node.target);//注意和下一行的顺序
+                            t.tree("unselect");
+                            //判断node节点下是不是有childred？ 有：点击的是一个父级菜单
+                            return;
+                        }
+                    },
+                })
+            } else{
+                $('#QiKanName').combotree({
+                    url: '/approval/json/qklwtreesNull.json',
+                    method: 'get',
+                    width: '100%',
+                    editable: true,
+                    animate: true,
+                    labelPosition: 'top'
+                    //TODO   tips
+                })
+            }
+            var mark = jsonarray[value];
+            $("#Points").val(mark[0])
+            $("#Reward").val(mark[1])
+        }
+    });
+
+
+    var jsonarray = null;
+    $.getJSON("/approval/json/rewardAndPoints.json", function (data) {
+        jsonarray = data;
+    })
+
+
+
+
+</script>
+</body>
+
+</html>

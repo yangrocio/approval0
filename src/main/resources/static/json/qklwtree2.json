@@ -1,0 +1,16 @@
+[
+  {"id":"1","text":"Science"},
+  {"id":"2","text":"Nature"},
+  {"id":"3","text":"SCI"},
+  {"id":"4","text":"CSSCI"},
+  {"id":"5","text":"SSCI"},
+  {"id":"6","text":"A&HCI"},
+  {"id":"7","text":"EI(JA)"},
+  {"id":"8","text":"人文社科一级顶尖期刊"},
+  {"id":"9","text":"人文社科权威期刊"},
+  {"id":"a","text":"中文核心"},
+  {"id":"b","text":"CN"},
+  {"id":"c","text":"一般论文"}
+
+
+]

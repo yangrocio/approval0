@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div  th:replace="pages/common/aboutteacher:: zschteacherheader"></div>
+
+</head>
+
+
+<body onload="getTeaBonus()" class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-mini"><b>科研处</b></span>
+            <span class="logo-lg"><b>知识产权</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                </p>
+                            </li>
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()" class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()" class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+<!--            <ul class="sidebar-menu">-->
+<!--                <li class="header">菜单</li>-->
+<!--                <li><a onclick="teacherGoLoginSuccessPage()"><i class="fa fa-dashboard"></i> <span>基本操作</span></a></li>-->
+<!--                <li><a onclick="goTeacherNoticeManage()"><i class="fa fa-dashboard"></i> <span>通知公告</span></a></li>-->
+<!--                <li class="active"><a onclick="goTeaBonus()"><i class="fa fa-dashboard"></i> <span>我的业绩点</span></a></li>-->
+<!--            </ul>-->
+
+            <div  th:replace="pages/common/aboutteacher:: zschteachermenu"></div>
+
+        </section>
+    </aside>
+
+
+    <div class="content-wrapper">
+
+        <section class="content-header">
+            <h1>
+                数据管理
+
+            </h1>
+
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <!-- .box-body -->
+            <div class="box box-primary">
+                <div class="box-body">
+                    <!-- 数据表格 -->
+                    <div class="table-box">
+                        <h3 class="text-center">计入审核的部分</h3>
+                        <table class="table table-bordered table-striped table-hover dataTable">
+                            <thead>
+                            <tr>
+                                <th class="text-center">申请日期</th>
+                                <th class="text-center">项目名称</th>
+                                <th class="text-center">分类1</th>
+                                <th class="text-center">分类2</th>
+                                <th class="text-center">申请方式</th>
+                                <th class="text-center">项目类别</th>
+                                <th class="text-center">发明人排序</th>
+                                <th class="text-center">累计绩点数</th>
+                                <th class="text-center">备注</th>
+                            </tr>
+                            </thead>
+                            <tbody id="pass_table">
+
+
+                            </tbody>
+
+                        </table>
+                        <h4 class="text-right" id="all_message"></h4>
+
+                        <h3 class="text-center" style="border-top:1px solid gray; margin-top: 50px;">未通过审核的部分</h3>
+                        <table class="table table-bordered table-striped table-hover dataTable">
+                            <thead>
+                            <tr>
+                                <!--<th class="text-center">序号</th>-->
+                                <th class="text-center">申请日期</th>
+                                <th class="text-center">项目名称</th>
+                                <th class="text-center">分类1</th>
+                                <th class="text-center">分类2</th>
+                                <th class="text-center">申请方式</th>
+                                <th class="text-center">项目类别</th>
+                                <th class="text-center">发明人排序</th>
+
+
+                            </tr>
+                            </thead>
+                            <tbody id="pass_table2">
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</div>
+<div  th:replace="pages/common/aboutteacher:: zschteacherfooter"></div>
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+    });
+    setSidebarActive("wdyj");
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+
+    // 列表按钮   让按钮变大
+    $("#dataList td input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+    });
+    // 全选操作  全选操作
+    $("#selall").click(function() {
+        var clicks = $(this).is(':checked');
+        if (!clicks) {
+            $("#dataList td input[type='checkbox']").iCheck("uncheck");
+        } else {
+            $("#dataList td input[type='checkbox']").iCheck("check");
+        }
+        $(this).data("clicks", !clicks);
+    });
+</script>
+</body>
+
+</html>

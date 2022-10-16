@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.MxhzbDao">
+
+    <select id="selectAll" resultType="Mxhzb">
+        select number,department,name,timu as topic,systime,reward as reward,points,'会议论文' as selecttype,dyzz,times as time,
+        types as kwtype,hyname as fbkw,fq as fq
+        from hylw
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+
+        select number,department,name,timu as topic,systime,reward as reward,points,'期刊论文' as selecttype ,dyzz,time,
+        type as kwtype,qikanname as fbkw,remark as fq
+        from qklw
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+
+        select number,department,name,timu as topic,systime,reward as reward,points,'学术著作' as selecttype  ,dyzz,time,
+        worktype as kwtype, press as fbkw,concat(zzlx," ",IFNULL(fq,'')) as fq
+        from xszz
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+
+        select number,department,name,xmname as topic,systime,reward as reward,points,'获批项目' as selecttype ,hoster as dyzz,lxtime as time,
+        concat(prorank," ",proproperty) as kwtype,  xmsource as fbkw,remark as fq
+        from hpxm
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+
+        select number,department,name,xmname as topic,systime,reward as reward,points,'结项验收' as selecttype ,hoster as dyzz,time,
+        concat(rank," ",proproperty) as kwtype, xmly  as fbkw,remark as fq
+        from jxys
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+
+        select number,department,name,xmname as topic,systime,reward as reward,points,'横向立项' as selecttype ,principal as dyzz,qdtime as time,
+        concat(ybk,"万") as kwtype,  aunit as fbkw,remark as fq
+        from hxlx
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+
+        select number,department,name,xmname as topic,systime,reward as reward,points,'横向结项' as selecttype  ,principal as dyzz,jxtime as time,
+        concat(ybk,"万") as kwtype, aunit as fbkw,remark as fq
+        from hxxm
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+
+        select number,department,name,xmname as topic,systime,reward as reward,points,'软件著作' as selecttype , dyzz,djtime as time,
+        bqtype  as kwtype,sydw as fbkw,concat(syfs," ",IFNULL(fq,'')) as fq
+        from rjzz
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+
+        select number,department,name,xmname as topic,systime,reward as reward,points,'获批专利' as selecttype,fmr as dyzz,
+        IF(pstatus='申请',sqtime,sytime) AS time,
+        ptype as kwtype,bfbm as fbkw, concat(pstatus," ",IFNULL(fq,''))  as fq
+        from hpzl
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+
+        select number,department,name,xmname as topic,systime,reward as reward,points,'学术称号' as selecttype,xmname as dyzz,time as time,
+        rank as kwtype,xfbm as fbkw, fq  as fq
+        from xsch
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+
+        select number,department,name,xmname as topic,systime,reward as reward,points,'学术交流' as selecttype,cyry as dyzz,time as time,
+        rank as kwtype,zbdw as fbkw, fq  as fq
+        from xsjl
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+
+        union all
+
+
+
+        select number,department,name,cgname as topic,systime,kyjl as reward,points,'获批奖励' as selecttype ,dyhjr as dyzz,hjtime as time,
+        jlrank as kwtype, jlname as fbkw,concat(hjrank," ",IFNULL(remark,'')) as fq
+        from hpjl
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+
+        select number,department,name,timu as topic,systime,reward as reward,points,'音美展览比赛获奖' as selecttype ,dyzz,awardtime as time,
+        rewardsort as kwtype,organizer as fbkw,concat(if(substring(rewardsort,-3)!='台播放',substring(rewardsort,-3),'电视台播放' )," ",IFNULL(remark,''))  as fq
+        from ymhj
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+
+        select number,department,name,entryname as topic,systime,reward as reward,points,'体育比赛获奖' as selecttype ,awardee as dyzz,wintime as time,
+        sportslv as kwtype,bjbm as fbkw,
+        concat(ranking," ",IFNULL(fq,'')) as fq
+        from tyhj
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        union all
+        select number,department,name,cgname as topic,systime,reward as reward,points,'智库建设' as selecttype , dyzz, cntime as  time,
+        cnjb as kwtype,cnbm as fbkw,fq as fq
+        from zkjs
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+
+        union all
+
+        select number,department,name,cgname as topic,systime,reward as reward,points,'成果转化' as selecttype , dyzz,zhtime as time,
+        concat(zrdzjf,"万") as kwtype,zhdw as fbkw,concat(zrlx," ",IFNULL(fq,'')) as fq
+        from cgzh
+        where judgestatus='3' and systime between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+
+        order by  department asc,number asc,selecttype
+    </select>
+
+</mapper>

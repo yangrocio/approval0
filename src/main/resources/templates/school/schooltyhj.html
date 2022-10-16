@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="school/schoolheader :: schoolheader"></div>
+
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-mini"><b>科研处</b></span>
+            <span class="logo-lg"><b>成果管理</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                </p>
+                            </li>
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()" class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()" class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div th:replace="school/schoolmenu:: schoolmenu"></div>
+
+        </section>
+    </aside>
+
+
+    <div class="content-wrapper">
+
+        <section class="content-header">
+            <h1>
+                体育获奖
+
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li><a href="#">体育获奖</a></li>
+            </ol>
+
+
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <!-- .box-body -->
+            <div class="box box-primary">
+                <div class="box-body">
+                    <!-- 数据表格 -->
+                    <div class="table-box">
+
+                        <!--工具栏-->
+                        <div class="pull-left ">
+                            <div class="form-group form-inline">
+                                <button type="button" class="btn btn-xs bg-olive" onclick='styhjshow()'><i
+                                        class="fa fa-pencil-square-o"></i>查看
+                                </button>
+                                <span th:if="${session.USER_SESSION.roletype} eq '3'">
+                                <button type="button" class="btn btn-xs bg-olive" onclick='styhjupdate()'><i
+                                        class="fa  fa-pencil-square-o"></i>编辑
+                                </button>
+                                <button type="button" class="btn btn-xs bg-olive" onclick='styhjdelete()'><i
+                                        class="fa  fa-pencil-square-o"></i>删除
+                                </button>
+                                <button type="button" class="btn btn-xs bg-olive" onclick='ExcelCheckboxModal()'><i class="fa fa-save"></i>导出
+                                </button>
+                                <button type="button" class="btn btn-xs bg-olive" onclick="downloadstyhjfjsc()"><i
+                                        class="fa fa-arrow-circle-o-down"></i>批量下载附件
+                                </button>
+                                <button type="button" class="btn btn-xs bg-olive" onclick="passaudittyhj()"><i
+                                        class="fa fa-check"></i>通过
+                                </button>
+                                <button type="button" class="btn btn-xs btn-danger" onclick="passnoaudittyhj()"><i
+                                        class="fa  fa-remove"></i>不通过
+                                </button>
+                                    <button type="button" class="btn btn-xs  bg-olive" onclick='styhjcheck()'><i
+                                            class="fa fa-pencil-square-o"></i>审核
+                                    </button>
+                                </span>
+                                <button type="button" class="btn btn-xs bg-olive" onclick='styhjQueryModal()'><i
+                                        class="fa fa-pencil-square-o"></i>查询
+                                </button>
+                                <div class="modal fade bs-example-modal-lg" id="selectExcelshow" tabindex="-1"
+                                     role="dialog"
+                                     aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-hidden="true">
+                                                    &times;
+                                                </button>
+                                                <h4 class="modal-title">筛选/选择属性</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="tab-pane">
+                                                    <div class="row data-type">
+                                                        <div class="radio col-md-12"><label><input type="checkbox" id="ExcelAll" value="多选">多选</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="department">院系</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="number">工号</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="name">姓名</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="awardee">获奖人</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="entryname">体育项目名</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="wintime">获奖时间</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="certificateid">证书编号</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="sportslv">运动会级别</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="ranking">获奖名次</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="bjbm">颁奖部门</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="points">业绩点</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="reward">科研奖励(万元)</label></div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="fq">备注</label></div>
+
+
+                                                        <div class="col-md-12 data text-center">
+                                                            <button type="button" class="btn bg-olive"
+                                                                    onclick="tyhjExcelDownload()">导出Excel
+                                                            </button>
+                                                            <button type="button" class="btn bg-olive"
+                                                                    onclick="ExcelCheckboxCancle()">取消
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade bs-example-modal-lg" id="tyhjshowmodal" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <h4 class="modal-title">数据展示</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="tab-pane">
+                                            <div class="row data-type">
+
+                                                <div class="col-md-2 title">获奖人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Awardee2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">体育项目名</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Entryname2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">获奖时间</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control" id="WinTime2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">证书编号</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="CertificateID2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">运动会级别</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="SportsLV2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">获奖名次</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Ranking2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">颁奖部门</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="BJBM2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">业绩点</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Points2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">科研奖励(万)</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Reward2"
+                                                           disabled="disabled">
+                                                </div>
+                                                <div class="col-md-2 title">备注</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="fq2"
+                                                           disabled="disabled">
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </div>
+                        <div class="modal fade bs-example-modal-lg" id="tyhjupdatemodal" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <h4 class="modal-title">数据展示</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="tab-pane">
+                                            <div class="row data-type">
+
+                                                <div class="col-md-2 title mast">获奖人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Awardee">
+                                                    <input type="hidden" class="form-control" id="tid">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">体育项目名</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Entryname">
+                                                </div>
+
+                                                <div class="col-md-2 title  mast">获奖时间</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control" id="WinTime">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">证书编号</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="CertificateID">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">运动会级别</div>
+                                                <div class="col-md-4 data">
+                                                    <div id="SportsLV" class="col-md-11"></div>
+                                                </div>
+
+                                                <div class="col-md-2 title mast">获奖名次</div>
+                                                <div class="col-md-4 data">
+                                                    <select id="Ranking" class="form-control">
+                                                        <option>请选择</option>
+                                                        <option>一等奖</option>
+                                                        <option>二等奖</option>
+                                                        <option>三等奖</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2 title mast">颁奖部门</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="BJBM">
+                                                </div>
+
+                                                <div class="col-md-2 title  mast">业绩点</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="number" class="form-control" id="Points">
+                                                </div>
+
+                                                <div class="col-md-2 title">科研奖励(万)</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="number" class="form-control" id="Reward">
+                                                </div>
+                                                <div class="col-md-2 title">备注</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="fq">
+                                                </div>
+
+                                                <input type="text" class="form-control" id="judgestatusdisabled"
+                                                       style="display: none">
+
+                                                <div class="col-md-12 data text-center">
+                                                    <button type="button" class="btn bg-maroon"
+                                                            onclick="tyhjupdatesubmit()">更新
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </div>
+
+                        <!--搜索弹窗-->
+                        <div class="modal fade bs-example-modal-lg" id="styhjQueryModal" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <h4 class="modal-title">查询页面</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="tab-pane">
+                                            <div class="row data-type">
+                                                <div class="col-md-2 title mast">获奖人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Awardee9">
+                                                    <!--<input type="hidden" class="form-control" id="hid3">-->
+                                                </div>
+
+                                                <div class="col-md-2 title mast">体育项目名称</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Entryname9">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">运动会级别</div>
+                                                <div class="col-md-4 data">
+                                                    <select id="SportsLV9" class="form-control">
+                                                        <option value=""></option>
+                                                        <option value="全国运动会">全国运动会</option>
+                                                        <option value="全国锦标赛">全国锦标赛</option>
+                                                        <option value="全国甲级联赛等全国性单项比赛">全国甲级联赛等全国性单项比赛</option>
+                                                        <option value="河南省运动会">河南省运动会</option>
+                                                        <option value="地级市运动会">地级市运动会</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2 title mast">获奖时间</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control" id="WinTime9">
+                                                </div>
+
+
+                                                <!--<input type="text" class="form-control" id="FJSCdisabled3"-->
+                                                <!--style="display: none">-->
+                                                <!--<input type="text" class="form-control" id="judgestatusdisabled3"-->
+                                                <!--style="display: none">-->
+                                                <div class="col-md-12 data text-center">
+                                                    <button type="button"
+                                                            class="btn bg-maroon"
+                                                            onclick="gostyhjBydetail()">检索
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </div>
+
+
+                        <div class="box-tools pull-right">
+
+                            <table>
+                                <tr>
+                                    <td>院系：</td>
+                                    <td>
+                                        <select id="department" class="form-control input-sm ">
+
+                                            <option value="-1" th:selected="-1==${department}">请选择</option>
+                                            <span th:each="de:${departments}">
+                                                <option th:value="${de.name}" th:text="${de.name}"
+                                                        th:selected="${de.name eq department}"></option>
+                                        </span>
+                                        </select>
+                                    </td>
+                                    <td>姓名：</td>
+                                    <td>
+                                        <input type="text" class="form-control input-sm " id="number"
+                                               th:value="${number}">
+                                    </td>
+                                    <td>开始时间：</td>
+                                    <td>
+                                        <input type="date" class="form-control input-sm" id="start" th:value="${start}">
+                                    </td>
+                                    <td>结束时间：</td>
+                                    <td>
+                                        <input type="date" class="form-control  input-sm" id="end" th:value="${end}">
+                                    </td>
+                                    <td>审核状态：</td>
+                                    <td>
+                                        <select id="judgestatus" class="form-control">
+                                            <option value="-1" th:selected="-1==${judgestatus}">请选择</option>
+
+                                            <option value="2" th:selected="2==${judgestatus}">待学校审核</option>
+                                            <option value="3" th:selected="3==${judgestatus}">审核通过</option>
+
+                                            <option value="5" th:selected="5==${judgestatus}">学校退回</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" style="display:none" class="form-control  input-sm" id="Awardee8" th:value="${Awardee}">
+                                    </td>
+                                    <td>
+                                        <input type="text" style="display:none" class="form-control  input-sm" id="Entryname8" th:value="${Entryname}">
+                                    </td>
+                                    <td>
+                                        <input type="text" style="display:none" class="form-control  input-sm" id="SportsLV8" th:value="${SportsLV}">
+                                    </td>
+                                    <td>
+                                        <input type="text" style="display:none" class="form-control  input-sm" id="WinTime8" th:value="${WinTime}">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-default" onclick="gostyhjBydetail()"><i
+                                                class="fa fa-search"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                        <!--工具栏/-->
+
+
+                        <!--工具栏/-->
+                        <!--数据列表-->
+                        <table id="dataList" class="totable table table-bordered table-striped table-hover dataTable">
+                            <thead>
+                            <tr>
+                                <th class="text-center" width="1%"><input type="checkbox" id="selall"
+                                                                          class="icheckbox_square-blue"></th>
+                                <td class="text-center" width="4%">院系</td>
+                                <td class="text-center" width="3%">填报人(工号)</td>
+
+                                <td class="text-center" width="4%">获奖人</td>
+                                <td class="text-center" width="4%">体育奖项名</td>
+                                <td class="text-center" width="4%">证书编号</td>
+                                <td class="text-center" width="4%">获奖时间</td>
+                                <td class="text-center" width="4%">运动会级别</td>
+                                <td class="text-center" width="4%">获奖名次</td>
+                                <td class="text-center" width="3%">业绩点</td>
+                                <td class="text-center" width="3%">科研奖励(万)</td>
+                                <td class="text-center" width="5%">附件</td>
+                                <td class="text-center" width="4%">审核状态</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="tyhj:${pageInfo.list}">
+                                <td>
+                                    <input name="selected" type="checkbox" th:value="${tyhj.tid}">
+                                </td>
+                                <td th:text="${tyhj.department}" th:title="${tyhj.department}" class="txt"></td>
+                                <td th:text="${tyhj.name}+'('+${tyhj.number}+')'"  th:title="${tyhj.name}+'('+${tyhj.number}+')'"  class="txt"></td>
+                                <td th:text="${tyhj.awardee}"  th:title="${tyhj.awardee}"  class="txt"></td>
+                                <td th:text="${tyhj.entryname}"  th:title="${tyhj.entryname}"  class="txt"></td>
+                                <td th:text="${tyhj.certificateid}"  th:title="${tyhj.certificateid}"  class="txt"></td>
+                                <td th:text="${tyhj.wintime}"  th:title="${tyhj.wintime}"  class="txt"></td>
+                                <td th:text="${tyhj.sportslv}"  th:title="${tyhj.sportslv}"  class="txt"></td>
+                                <td th:text="${tyhj.ranking}"  th:title="${tyhj.ranking}"  class="txt"></td>
+                                <td th:text="${tyhj.points}"  th:title="${tyhj.points}"  class="txt"></td>
+                                <td th:text="${tyhj.reward}"  th:title="${tyhj.reward}"  class="txt"></td>
+                                <td name="fjsc" style="display: none" th:text="${tyhj.fjsc}"></td>
+                                <td>
+                                    <a class="btn btn-xs bg-olive" th:onclick="onlineshow([[${tyhj.fjsc}]])">预览</a>
+                                    <a class="btn btn-xs bg-olive" th:onclick="downloadfile([[${tyhj.fjsc}]])">下载</a>
+                                    <a class="btn btn-xs bg-olive"
+                                       th:onclick="showRetransmissionModal([[${tyhj.tid}]],
+                                       [[${tyhj.fjsc}]],'体育获奖',[[${tyhj.name}]],
+                                       [[${tyhj.number}]],[[${tyhj.department}]])">重传</a>
+                                </td>
+                                <td name="judgestatus" style="display: none" th:text="${tyhj.judgestatus}"></td>
+                                <!--审核显示部分 -->
+                                <!--th:text="${hylw.judgestatus}"-->
+                                <td>
+                                    <span th:switch="${tyhj.judgestatus}">
+                                        <p th:case="1">等待院系审核</p>
+                                        <p th:case="2">等待学校审核</p>
+                                        <p th:case="3">审核通过</p>
+                                        <p th:case="4">
+                                            <button class="btn btn-xs bg-olive"
+                                                    th:onclick="alert([[${tyhj.departmentopinion}]])">院系退回</button>
+                                        </p>
+                                        <p th:case="5">
+                                            <button class="btn btn-xs bg-olive"
+                                                    th:onclick="alert([[${tyhj.schoolopinion}]])">学校退回</button>
+                                        </p>
+                                        <p th:case="100">待完善</p>
+                                    </span>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal fade bs-example-modal-lg" id="retransmissionFile" tabindex="-1"
+                     role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                            <div class="modal-body">
+                                <div class="tab-pane">
+                                    <div class="row data-type">
+                                        <div class="col-md-12 title">核对信息</div>
+                                        <div class="col-md-2 title">编号</div>
+                                        <div class="col-md-4 data">
+                                            <input type="text" class="form-control" id="newid" disabled>
+                                        </div>
+                                        <div class="col-md-2 title">院系</div>
+                                        <div class="col-md-4 data">
+                                            <input type="text" class="form-control" id="newdepartment" disabled>
+                                        </div>
+                                        <div class="col-md-2 title">工号</div>
+                                        <div class="col-md-4 data">
+                                            <input type="text" class="form-control" id="newnumber" disabled>
+                                        </div>
+                                        <div class="col-md-2 title">姓名</div>
+                                        <div class="col-md-4 data">
+                                            <input type="text" class="form-control" id="newname" disabled>
+                                        </div>
+                                        <div class="col-md-2 title">类型</div>
+                                        <div class="col-md-4 data">
+                                            <input type="text" class="form-control" id="newtype" disabled>
+                                        </div>
+                                        <div class="col-md-2 title">老文件名称</div>
+                                        <div class="col-md-4 data">
+                                            <input type="text" class="form-control" id="newfjscname" disabled>
+                                        </div>
+                                        <div class="col-md-2 title">更新的文件</div>
+                                        <div class="col-md-10 data">
+                                            <input type="file" class="form-control" id="newfile" accept=".pdf">
+                                        </div>
+
+                                        <div class="col-md-12 data text-center">
+                                            <button type="button" class="btn  btn-success" onclick="retransmission()">
+                                                更新
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal -->
+                    </div>
+                </div>
+
+                <div class="modal-footer no-margin-top">
+                    <div class="col-md-6">
+                        当前第[[${pageInfo.pageNum}]]页,共 [[${pageInfo.pages}]] 页。一共[[${pageInfo.total}]]条记录
+                    </div>
+
+                    <ul class="pagination pull-right no-margin">
+                        <li th:if="${pageInfo.hasPreviousPage}">
+                            <a th:onclick="|javascript:gostyhjnext(1)|">首页</a>
+                        </li>
+
+
+                        <!--遍历条数-->
+                        <li th:each="nav:${pageInfo.navigatepageNums}">
+                            <a th:onclick="|javascript:gostyhjnext(${nav})|" th:text="${nav}"
+                               th:if="${nav != pageInfo.pageNum}"></a>
+                            <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}"
+                                  th:text="${nav}"></span>
+                        </li>
+                        <li>
+                            <a th:onclick="|javascript:gostyhjnext(${pageInfo.pages})|">尾页</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</div>
+<div th:replace="school/schoolfooter :: schoolfooter"></div>
+
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+    });
+    setSidebarActive("tyhj");
+
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+
+    // 列表按钮   让按钮变大
+    $("#dataList td input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+    });
+    // 全选操作  全选操作
+    $("#selall").click(function () {
+        var clicks = $(this).is(':checked');
+        if (!clicks) {
+            $("#dataList td input[type='checkbox']").iCheck("uncheck");
+        } else {
+            $("#dataList td input[type='checkbox']").iCheck("check");
+        }
+        $(this).data("clicks", !clicks);
+    });
+    var firstTime = true;
+    $('#SportsLV').combotree({
+        url: '/approval/json/tyhjtree.json',
+        method: 'get',
+        width: '250px',
+        editable: true,
+        animate: true,
+        labelPosition: 'top',
+        onBeforeSelect: function (node) {
+            if (node.children) {
+                //先封装成一个tree
+                var t = $('#SportsLV').combotree('tree');
+                //然后使用toggle
+                t.tree('toggle', node.target);//注意和下一行的顺序
+                t.tree("unselect");
+                //判断node节点下是不是有childred？ 有：点击的是一个父级菜单
+                return;
+            }
+        },
+        onChange: function () {
+            if (firstTime) {
+                firstTime = false;
+                return;
+            }
+            var value = $('#SportsLV').combotree('getText');
+            var mark = jsonarray[value];
+            $("#Points").val(mark[0])
+            $("#Reward").val(mark[1])
+
+            $("#Ranking").val(value.substring(value.length - 3));
+            $("#SportsLV").combotree("setValue", value.slice(0, -3));
+        }
+        <!--如果报错405，加上method:'get'即可-->
+    });
+
+
+
+    var jsonarray = null;
+    $.getJSON("/approval/json/rewardAndPoints.json", function (data) {
+        jsonarray = data;
+    })
+</script>
+</body>
+
+</html>

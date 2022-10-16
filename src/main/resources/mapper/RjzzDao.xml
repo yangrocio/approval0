@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.RjzzDao">
+
+    <select id="selectRjzzByDetail" resultType="Rjzz">
+        select * from rjzz where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="username!='-1'">
+            and number = #{username}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime  &lt;= #{end}
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus  = #{judgestatus}
+        </if>
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '3'  or judgestatus = '4' or judgestatus = '5' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and (   judgestatus = '2' or judgestatus = '3'   or judgestatus = '5' )
+        </if>
+
+        order by systime desc,department desc,judgestatus,points desc
+
+    </select>
+
+    <select id="selectRjzzByDetail2" resultType="Rjzz">
+        select * from rjzz where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="username!='-1'">
+            and number = #{username}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime  &lt;= #{end}
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus  = #{judgestatus}
+        </if>
+        <if test="XMName!='-1'">
+            and xmName like '%${XMName}%'
+        </if>
+        <if test="DYZZ!='-1'">
+            and DYZZ like '%${DYZZ}%'
+        </if>
+        <if test="QTZZ!='-1'">
+            and QTZZ like '%${QTZZ}%'
+        </if>
+        <if test="DJNumber!='-1'">
+            and DJNumber like '%${DJNumber}%'
+        </if>
+        <if test="DJTime!='-1'">
+            and DJTime like '%${DJTime}%'
+        </if>
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '3'  or judgestatus = '4' or judgestatus = '5' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and (   judgestatus = '2' or judgestatus = '3'   or judgestatus = '5' )
+        </if>
+
+        order by systime desc,department desc,judgestatus,points desc
+
+    </select>
+
+    <insert id="insertRjzz" parameterType="Rjzz">
+        insert into rjzz(number,name,department,xmname,dyzz,qtzz,djnumber,sydw,fq,
+        finishtime,djtime,bqtype,syfs,points,fjsc,judgestatus,systime)
+        values(#{number},#{name},#{department},#{xmname},#{dyzz},#{qtzz},#{djnumber},#{sydw},#{fq},
+        #{finishtime},#{djtime},#{bqtype},#{syfs},#{points},#{fjsc},#{judgestatus},#{systime})
+    </insert>
+    <insert id="insertExcel" parameterType="Rjzz">
+        insert into rjzz(number,name,department,xmname,dyzz,qtzz,djnumber,sydw,fq,
+        finishtime,djtime,bqtype,syfs,points,fjsc,judgestatus,systime)
+        values
+        <foreach collection="list" item="data"  separator=",">
+            (
+            #{data.number},#{data.name},#{data.department},#{data.xmname},#{data.dyzz},#{data.qtzz},#{data.djnumber},#{data.sydw},#{data.fq},
+            #{data.finishtime},#{data.djtime},#{data.bqtype},#{data.syfs},#{data.points},#{data.fjsc},#{data.judgestatus},#{data.systime}
+            )
+        </foreach>
+
+    </insert>
+    <delete id="deleteRjzz" parameterType="java.util.List">
+        delete from rjzz where department=#{department} and number=#{number} and rid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </delete>
+    <delete id="deleteById" parameterType="java.util.List">
+        delete from rjzz where rid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </delete>
+    <select id="showRjzz" resultType="Rjzz">
+        select * from rjzz where  rid=#{id}
+    </select>
+
+    <update id="updateRjzz" parameterType="Rjzz">
+        update rjzz set xmname=#{xmname},dyzz=#{dyzz}, qtzz=#{qtzz},djnumber=#{djnumber},sydw=#{sydw},finishtime=#{finishtime},
+        djtime=#{djtime}, bqtype=#{bqtype},syfs=#{syfs},points=#{points},fq=#{fq},
+        judgestatus=#{judgestatus}
+        <if test='fjsc!=null'>
+            , fjsc=#{fjsc}
+        </if>
+        <if test='systime!=null'>
+            ,systime=#{systime}
+        </if>
+        where rid=#{rid}
+    </update>
+
+    <update id="updateRjzzByHigh" parameterType="com.aynu.dto.Audit">
+        update rjzz set departmentopinion=#{departmentopinion},schoolopinion=#{schoolopinion},judgestatus=#{judgestatus}
+        where rid in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </update>
+
+    <select id="getFileNameByList" parameterType="java.util.List" resultType="String">
+        select fjsc from rjzz where rid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </select>
+    <!--and -->
+
+    <select id="selectRjzzByDiff" resultType="Rjzz">
+        select * from rjzz where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        and judgestatus ='3' order by systime desc,department
+    </select>
+
+    <select id="getExcelJson" resultType="map">
+        select
+        <foreach collection="params" item="param"  separator=",">${param}</foreach>
+        from rjzz where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime &lt;= #{end}
+        </if>
+        and judgestatus ='3'
+    </select>
+    <select id="getCountChart" resultType="com.aynu.bean.CountChart">
+        SELECT COUNT(1) as count,YEAR(systime) as year FROM rjzz WHERE
+        YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime);
+    </select>
+</mapper>

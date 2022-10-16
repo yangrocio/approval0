@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div  th:replace="pages/common/aboutdepartment:: zschdepartmentheader"></div>
+
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>科研处</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>知识产权</b></span>
+        </a>
+
+
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                    <!--张猿猿 - 数据管理员-->
+                                </p>
+                            </li>
+
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()"  class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()"  class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <!-- 导航侧栏 -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <div  th:replace="pages/common/aboutdepartment:: zschdepartmentmenu"></div>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <!-- 导航侧栏 /-->
+
+    <!-- 内容区域 -->
+    <!-- @@master = admin-layout.html-->
+    <!-- @@block = content -->
+
+    <!-- 内容区域 -->
+
+
+    <div class="content-wrapper">
+
+        <!-- 内容头部 -->
+        <section class="content-header">
+            <h1>
+                数据管理
+
+            </h1>
+
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <!-- .box-body -->
+            <div class="box box-primary">
+                <div class="box-body">
+                    <!-- 数据表格 -->
+                    <div class="table-box">
+                        <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+                            <thead>
+                            <tr>
+                                <th >发布时间</th>
+                                <th class="text-center">公告标题</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr th:each="notices:${pageInfo.list}">
+                                <td th:text="${#dates.format(notices.generateDate, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td><a th:onclick="|javascript:showNoticeById(${notices.nid})|" th:text="${notices.noticeTop}" data-toggle="modal" data-target="#shownoticemessage"></a></td>
+
+
+                                <div class="modal fade" id="shownoticemessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                    &times;
+                                                </button>
+                                                <h4 class="modal-title" id="my_title_Label" >
+                                                    <span id="notice_top"></span>
+                                                </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                公告内容：<textarea id="notice_article" disabled rows="10" class="form-control" ></textarea>
+                                                发布时间：<div id="notice_date" class="form-control"></div>
+                                                发布人：<div id="notice_name" class="form-control"></div>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal -->
+                                </div>
+
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <!-- 数据表格 /-->
+
+                </div>
+
+
+
+                <div class="modal-footer no-margin-top">
+                    <div class="col-md-6">
+                        当前第[[${pageInfo.pageNum}]]页,共 [[${pageInfo.pages}]] 页。一共[[${pageInfo.total}]]条记录
+                    </div>
+
+                    <ul class="pagination pull-right no-margin">
+                        <li th:if="${pageInfo.hasPreviousPage}">
+                            <a th:href="'/approval/jump/goDepartmentNoticeManage?pageNum=1'">首页</a>
+                        </li>
+
+                        <li class="prev" th:if="${pageInfo.hasPreviousPage}">
+                            <a th:href="'/approval/jump/goDepartmentNoticeManage?pageNum='+${pageInfo.prePage}">
+                                <i class="ace-icon fa fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <!--遍历条数-->
+                        <li th:each="nav:${pageInfo.navigatepageNums}">
+                            <a th:href="'/approval/jump/goDepartmentNoticeManage?pageNum='+${nav}" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                            <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}"
+                                  th:text="${nav}"></span>
+                        </li>
+
+                        <li class="next" th:if="${pageInfo.hasNextPage}">
+                            <a th:href="'/approval/jump/goDepartmentNoticeManage?pageNum='+${pageInfo.nextPage}">
+                                <i class="ace-icon fa fa-angle-double-right"></i>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="'/approval/jump/goDepartmentNoticeManage?pageNum='+${pageInfo.pages}">尾页</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </section>
+    </div>
+</div>
+
+
+<div  th:replace="pages/common/aboutdepartment:: zschdepartmentfooter"></div>
+
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+    });
+    setSidebarActive("tzgg");
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+
+    // 列表按钮   让按钮变大
+    $("#dataList td input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+    });
+    // 全选操作  全选操作
+    $("#selall").click(function() {
+        var clicks = $(this).is(':checked');
+        if (!clicks) {
+            $("#dataList td input[type='checkbox']").iCheck("uncheck");
+        } else {
+            $("#dataList td input[type='checkbox']").iCheck("check");
+        }
+        $(this).data("clicks", !clicks);
+    });
+</script>
+</body>
+
+</html>

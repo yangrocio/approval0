@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="department/departmentheader :: departmentheader"></div>
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>科研处</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>成果管理</b></span>
+        </a>
+
+
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                    <!--张猿猿 - 数据管理员-->
+                                </p>
+                            </li>
+
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()"  class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()"  class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <!-- 导航侧栏 -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <div th:replace="department/departmentmenu :: departmentmenu"></div>
+        </section>
+
+    </aside>
+
+
+    <div class="content-wrapper">
+
+        <!-- 内容头部 -->
+        <section class="content-header">
+            <h1>
+                数据管理
+                <small>数据列表</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#" onclick="testssssss()"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li><a href="#">数据管理</a></li>
+                <li class="active">数据列表</li>
+            </ol>
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <!-- .box-body -->
+            <div class="box box-primary">
+                <div class="box-body">
+                    <!-- 数据表格 -->
+                    <div class="table-box">
+
+                        <div class="pull-left">
+                            <div class="form-group form-inline">
+                                <div class="btn-group">
+                                    <button type="button" onclick="ExcelBriefByDepartment()" class="btn btn-google">导出汇总表</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group  form-inline pull-right">
+                            <label for="select_tea_id">教师工号:</label>
+                            <input id="select_tea_id" th:value="${id}" type="text" class="form-control " placeholder="请输入教师工号" style="margin-right: 10px">
+
+                            <label for="select_name">姓名：</label>
+                            <input id="select_name" th:value="${name}" type="text" class="form-control " placeholder="请输入教师姓名" style="margin-right: 10px">
+
+                            <button onclick="departmentApplyPageByDetail()" id="select_where" class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
+                        </div>
+
+                        <!--数据列表-->
+                        <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+                            <thead>
+                            <tr>
+                                <!--<th class="text-center">院系</th>-->
+                                <th class="text-center">申请人</th>
+                                <th class="text-center">项目名称</th>
+                                <th class="text-center">电话</th>
+                                <!--<th class="text-center">申报日期</th>-->
+                                <th class="text-center">审核状态</th>
+                                <th class="text-center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr th:each="departmentDoc:${pageInfo.list}">
+                                <!--<td>1</td>-->
+                                <td th:text="${departmentDoc.tinventionname}"></td>
+                                <td th:text="${departmentDoc.tname}"></td>
+                                <td th:text="${departmentDoc.tphone}"></td>
+                                <!--<td th:text="${departmentDoc.tapplydate}" ></td>-->
+                                <td th:switch="${departmentDoc.judgestatus}">
+                                    <p th:case="1" style="color: #68ff11">等待院系审核</p>
+                                    <p th:case="2" style="color: blue">等待学校审核</p>
+                                    <p th:case="3" style="color: green">已通过学校审核</p>
+                                    <p th:case="4" style="color: red">院系退回</p>
+                                    <p th:case="5" style="color: red">学校退回</p>
+                                </td>
+
+                                <td>
+                                    <!--${departmentDoc.tid}-->
+
+                                    <span th:if="${departmentDoc.judgestatus} eq '1'">
+                                        <button th:onclick="|javascript:readdepartmentDoc(${departmentDoc.tid})|"
+                                                type="button" class="btn ">查看
+                                       </button>
+                                    </span>
+                                    <span th:if="${departmentDoc.judgestatus} eq '3'">
+                                            <button th:onclick="|javascript:translateDoc(${departmentDoc.tid})|"
+                                                    type="button" class="btn ">导出</button>
+
+
+                                    </span>
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                        <!--数据列表/-->
+                    </div>
+                    <!-- 数据表格 /-->
+
+                </div>
+
+
+
+                <div class="modal-footer no-margin-top">
+                    <div class="col-md-6">
+                        当前第[[${pageInfo.pageNum}]]页,共 [[${pageInfo.pages}]] 页。一共[[${pageInfo.total}]]条记录
+                    </div>
+
+                    <ul class="pagination pull-right no-margin">
+                        <li th:if="${pageInfo.hasPreviousPage}">
+                            <a th:onclick="|javascript:godepartApplyPageByDetaiNext(1)|">首页</a>
+                        </li>
+                        <!--遍历条数-->
+                        <li th:each="nav:${pageInfo.navigatepageNums}">
+                            <a th:onclick="|javascript:godepartApplyPageByDetaiNext(${nav})|" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+
+                            <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}" th:text="${nav}"></span>
+                        </li>
+                        <li>
+                            <a th:onclick="|javascript:godepartApplyPageByDetaiNext(${pageInfo.pages})|">尾页</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </section>
+    </div>
+</div>
+
+<div th:replace="department/departmentfooter :: departmentfooter"></div>
+
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+
+
+    });
+
+
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+
+    $(document).ready(function () {
+        setSidebarActive("admin-blank");
+    });
+</script>
+</body>
+
+</html>

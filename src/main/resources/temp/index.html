@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="easyui.css">
+    <script type="text/javascript" src="jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="jquery.combotree.js"></script>
+</head>
+<body>
+<input id="cc" class="easyui-combotree"  style="width: 190px;"  panelHeight="300px">
+<a href="#" id="btn" class="easyui-linkbutton" onclick="getValue()">getValue</a>
+<script>
+    $('#cc').combotree({
+        url: 'tree_data1.json',
+        <!--如果报错405，加上method:'get'即可-->
+    });
+
+    function getValue(){
+        var value = $('#cc').combotree('getValue');
+        alert(value);
+    }
+</script>
+</body>
+</html>

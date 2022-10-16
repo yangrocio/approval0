@@ -1,0 +1,52 @@
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="schoolfooter">
+    <footer class="main-footer" style="color: blue;" >
+        欢迎 <strong th:text="${session.USER_SESSION.name}"></strong> 登陆安阳师范学院科研成果统计系统
+        用户角色：
+        <span th:switch="${session.USER_SESSION.roletype}">
+        <strong th:case="1">
+            教师
+        </strong>
+            <strong th:case="2">
+            院系管理员
+        </strong>
+            <strong th:case="3">
+            学校管理员
+        </strong>
+            <strong th:case="4">
+            超级管理员
+        </strong>
+            <strong th:case="5">
+            学校领导
+        </strong>
+        </span>
+        附件下载：
+        <a onclick="getRewardDocx()">安阳师范学院高水平成果奖励办法  </a>
+        <a onclick="getPointDocx()">安阳师范学院科学研究业绩点核算办法 </a>
+        邮箱:kyc@aynu.edu.cn
+    </footer>
+    <script th:src="@{/plugins/jQuery/jquery-2.2.3.min.js}"></script>
+    <script th:src="@{/plugins/jQueryUI/jquery-ui.min.js}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            let temp = $(".active:eq(1)").attr("id");
+            remainCount(temp);
+        })
+    </script>
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <script th:src="@{/plugins/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/plugins/raphael/raphael-min.js}"></script>
+    <script th:src="@{/plugins/iCheck/icheck.min.js}"></script>
+    <script th:src="@{/plugins/adminLTE/js/app.min.js}"></script>
+    <script th:src="@{/plugins/select2/select2.full.min.js}"></script>
+    <script th:src="@{/plugins/ionslider/ion.rangeSlider.min.js}"></script>
+    <script th:src="@{/plugins/bootstrap-slider/bootstrap-slider.js}"></script>
+    <script th:src="@{/plugins/combotree/jquery.easyui.min.js}"></script>
+    <script th:src="@{/plugins/combotree/jquery.combotree.js}"></script>
+    <script th:src="@{/js/login.js}"></script>
+    <script th:src="@{/js/school.js}"></script>
+
+
+</div>

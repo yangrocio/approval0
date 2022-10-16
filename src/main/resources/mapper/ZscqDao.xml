@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.ZscqDao">
+
+    <select id="selectZscqByDetail" resultType="Zscq">
+        select * from teacherdoc where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="username!='-1'">
+            and tusername = #{username}
+        </if>
+        <if test="start!='-1'">
+            and adate &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and adate &lt;= #{end}
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus = #{judgestatus}
+        </if>
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '4' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and ( judgestatus = '2' or judgestatus = '3' or judgestatus = '5' )
+        </if>
+        order by department,adate desc,judgestatus desc
+    </select>
+
+    <select id="selectZscqByDetails" resultType="Zscq">
+        select * from teacherdoc where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="username!='-1'">
+            and tusername = #{username}
+        </if>
+        <if test="tcategory!='-1'">
+            and tcategory = #{tcategory}
+        </if>
+        <if test="start!='-1'">
+            and adate &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and adate &lt;= #{end}
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus = #{judgestatus}
+        </if>
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '4' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and ( judgestatus = '2' or judgestatus = '3' or judgestatus = '5' )
+        </if>
+        order by department,adate desc,judgestatus desc
+    </select>
+
+    <insert id="insertZscq" parameterType="Zscq">
+         insert into teacherdoc(name,tusername,tname,tcategory,tcategory2,tapply,tapplyname,tproject,tprojectid,
+        tprojectname,tsortname,tinventionname,tunitname,tphone,temail,tintroduce,tduty,tinventionname2,roletype,judgestatus,department,adate)
+        values(#{name},#{tusername},#{tname},#{tcategory},#{tcategory2},#{tapply},#{tapplyname},#{tproject},#{tprojectid},
+        #{tprojectname},#{tsortname},#{tinventionname},#{tunitname},#{tphone},#{temail},#{tintroduce},#{tduty},#{tinventionname2},#{roletype},
+        #{judgestatus},#{department},#{adate})
+    </insert>
+
+
+    <delete id="deleteZscq" parameterType="java.util.List">
+        delete from teacherdoc where tid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </delete>
+
+    <select id="showZscq" resultType="Zscq">
+        select * from teacherdoc where  tid=#{id}
+    </select>
+
+    <update id="updateZscq" parameterType="Zscq">
+        update teacherdoc set cgname=#{cgname},cgtype=#{cgtype},dyzz=#{dyzz},qtzz=#{qtzz},cnbm=#{cnbm},cgdz=#{cgdz},time=#{time},
+        points=#{points},reward=#{reward},
+        judgestatus=#{judgestatus}
+        <if test='fjsc!=null'>
+            , fjsc=#{fjsc}
+        </if>
+        <if test='systime!=null'>
+            ,systime=#{systime}
+        </if>
+        where  tid=#{tid}
+    </update>
+
+
+    <update id="updateZscqByHigh" parameterType="com.aynu.dto.Audit">
+        update teacherdoc set departmentopinion=#{departmentopinion},schoolopinion=#{schoolopinion},judgestatus=#{judgestatus}
+        where tid in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </update>
+
+    <update id="updateZschByDepartmentOpinion" parameterType="com.aynu.dto.dtos.DepartmentOpinion">
+        update teacherdoc set dunitopinion=#{dunitopinion},dunitheadname=#{dunitheadname},dunitchapter=#{dunitchapter},
+        ddate=#{ddate},judgestatus=#{judgestatus},departmentopinion=#{departmentopinion}
+        where tid=#{tid}
+    </update>
+
+    <update id="updateZschBySchoolOpinion" parameterType="com.aynu.dto.dtos.SchoolOpinion">
+        update teacherdoc set suretduty=#{suretduty},sureapply=#{sureapply},surename=#{surename},
+        surechapter=#{surechapter},suredate=#{suredate},judgestatus=#{judgestatus},schoolopinion=#{schoolopinion}
+        where tid=#{tid}
+    </update>
+
+
+
+
+</mapper>

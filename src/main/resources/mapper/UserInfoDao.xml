@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.UserInfoDao">
+    <update id="UpdateUserInfo" parameterType="com.aynu.bean.UserInfo">
+        update userinfo set
+        name=#{name},sex=#{sex},birthday=#{birthday},department=#{department},profession=#{profession},
+        qualifications=#{qualifications},degree=#{degree},hdgu=#{hdgu},major=#{major},rdirection=#{rdirection},
+        idcard=#{idcard},telephone=#{telephone},email=#{email},nationality=#{nationality},nation=#{nation}
+        where number=#{number} and roletype=#{roletype}
+    </update>
+
+    <update id="UpdateUserPwd" parameterType="com.aynu.bean.UserInfo">
+        update userinfo set
+        password=#{password}
+        where number=#{number} and roletype=#{roletype}
+    </update>
+
+    <update id="UpdateUserRoleType" parameterType="com.aynu.bean.User">
+        update userinfo set
+        roletype=#{newroletype}
+        where number=#{user.number} and roletype=#{user.roletype}
+    </update>
+
+    <update id="UpdateUserLoginStatus" parameterType="string">
+        update userinfo set
+        loginstatus=#{loginstatus}
+        where number=#{number}
+    </update>
+
+    <insert id="InsertManyUserByList" parameterType="java.util.List">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into userinfo (name,sex,birthday,department,profession,qualifications,
+        degree,hdgu,major,idcard,telephone,nation,roletype,number,password,loginstatus,
+        fmzl,xxzl,sjzl,rjzzq,btsj,qtsj)
+        values
+        <foreach collection="list"  item="user" index="index" separator=",">
+            (
+            #{user.name},#{user.sex},#{user.birthday},#{user.department},
+            #{user.profession},#{user.qualifications},#{user.degree},#{user.hdgu},
+            #{user.major},#{user.idcard},#{user.telephone},#{user.nation},
+            #{user.roletype},#{user.number},#{user.password},'1',
+            50,5,5,5,5,5
+            )
+        </foreach>
+    </insert>
+
+    <insert id="InsertUser" parameterType="UserInfo">
+            insert into userinfo(name,number,password,roletype,major,sex,department,loginstatus,
+            fmzl,xxzl,sjzl,rjzzq,btsj,qtsj)
+            values(#{name},#{number},#{password},#{roletype},#{major},#{sex},#{department},
+            #{loginstatus},#{fmzl},#{xxzl},#{sjzl},#{rjzzq},#{btsj},#{qtsj})
+    </insert>
+    <select id="selectSchoolDetail" resultType="UserInfo">
+        select * from userinfo where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="teaid!='-1'">
+            and number = #{teaid}
+        </if>
+        <if test="tea_name!='-1'">
+            and name = #{tea_name}
+        </if>
+        <if test="roletype!='-1'">
+            and roletype = #{roletype}
+        </if>
+        order by roletype desc,department,number
+    </select>
+
+    <select id="selectUserInfoByDetail" resultType="UserInfo">
+        select * from userinfo where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="teaid!='-1'">
+            and number = #{teaid}
+        </if>
+        <if test="tea_name!='-1'">
+            and name = #{tea_name}
+        </if>
+        <if test="roletype!='-1'">
+            and roletype = #{roletype}
+        </if>
+        order by roletype desc,department,number
+    </select>
+</mapper>

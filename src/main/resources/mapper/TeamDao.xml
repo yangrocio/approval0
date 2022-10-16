@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.TeamDao">
+
+    <select id="selectAll" resultType="Team">
+        select number,department,name,principal,approved_time,
+        scientific,point,type,approve_department,fq as fq,level
+        from tdgl
+        where judgestatus='3' and approved_time between #{start} and #{end}
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="principal!='-1'">
+            and principal = #{principal}
+        </if>
+        order by  department asc
+    </select>
+
+</mapper>

@@ -1,0 +1,115 @@
+[
+  {"id":"3a1","text":"管理学","state":"closed",
+    "children":[
+      {"id":"3a11","text":"南开管理评论"}, {"id":"3a12","text":"科学学研究"}, {"id":"3a13","text":"中国软科学"}]
+  },
+  {"id":"3a2","text":"马克思主义","state":"closed",
+    "children":[
+      {"id":"3a21","text":"马克思主义与现实"}, {"id":"3a22","text":"教学与研究"}]
+  },
+  {"id":"3a3","text":"哲学","state":"closed",
+    "children":[
+      {"id":"3a31","text":"哲学动态"}, {"id":"3a32","text":"自然辩证法研究"}, {"id":"3a33","text":"道德与文明"}]
+  },
+  {"id":"3a4","text":"宗教学","state":"closed",
+    "children":[
+      {"id":"3a41","text":"世界宗教研究"}, {"id":"3a42","text":"宗教学研究"}, {"id":"3a43","text":"世界宗教文化"}]
+  },
+  {"id":"3a5","text":"语言学汉语类","state":"closed",
+    "children":[
+      {"id":"3a51","text":"中国语文"}, {"id":"3a52","text":"世界汉语教学"}, {"id":"3a53","text":"当代语言学"}]
+  },
+  {"id":"3a6","text":"语言学外语类","state":"closed",
+    "children":[
+      {"id":"3a61","text":"外国语"}, {"id":"3a62","text":"现代外语"}, {"id":"3a63","text":"中国翻译"}]
+  },
+  {"id":"3a7","text":"外国文学","state":"closed",
+    "children":[
+      {"id":"3a71","text":"外国文学评论"}, {"id":"3a72","text":"外国文学研究"}]
+  },
+  {"id":"3a8","text":"中国文学","state":"closed",
+    "children":[
+      {"id":"3a81","text":"文艺理论研究"}, {"id":"3a82","text":"文学遗产"}, {"id":"3a83","text":"文艺理论与批评"}, {"id":"3a84","text":"中国现代文学研究丛刊"}]
+  },
+  {"id":"3a9","text":"艺术学","state":"closed",
+    "children":[
+      {"id":"3a91","text":"中央音乐学院学报"}, {"id":"3a92","text":"中国音乐学"}, {"id":"3a93","text":"装饰"}, {"id":"3a94","text":"美术"},
+      {"id":"3a95","text":"新美术"}, {"id":"3a96","text":"中国电视"}]
+  },
+  {"id":"3aa","text":"历史学","state":"closed",
+    "children":[
+      {"id":"3aa1","text":"近代史研究"}, {"id":"3aa2","text":"中国史研究"}, {"id":"3aa3","text":"当代中国史研究"},
+      {"id":"3aa4","text":"世界历史"}, {"id":"3aa5","text":"中国农史"}, {"id":"3aa6","text":"史学理论研究"}]
+  },
+  {"id":"3ab","text":"考古学","state":"closed",
+    "children":[
+      {"id":"3ab1","text":"文物"}, {"id":"3ab2","text":"考古学报"}]
+  },
+  {"id":"3ac","text":"经济学","state":"closed",
+    "children":[
+      {"id":"3ac1","text":"中国工业经济"}, {"id":"3ac2","text":"中国农村经济"}, {"id":"3ac3","text":"经济学(季刊)"}, {"id":"3ac4","text":"财贸经济"},
+      {"id":"3ac5","text":"金融研究"}
+    ]
+  },
+  {"id":"3ad","text":"政治学","state":"closed",
+    "children":[
+      {"id":"3ad1","text":"国际政治研究"}, {"id":"3ad2","text":"现代国际关系"},
+      {"id":"3ad3","text":"中共党史研究"}, {"id":"3ad4","text":"国际问题研究"}]
+  },
+  {"id":"3ae","text":"法学","state":"closed",
+    "children":[
+      {"id":"3ae1","text":"中国法学"}, {"id":"3ae2","text":"法商研究"},
+      {"id":"3ae3","text":"中外法学"}, {"id":"3ae4","text":"政法论坛"}, {"id":"3ae5","text":"法学家"}]
+  },
+  {"id":"3af","text":"社会学","state":"closed",
+    "children":[
+      {"id":"3af1","text":"中国人口科学"}, {"id":"3af2","text":"人口研究"}]
+  },
+  {"id":"3ag","text":"民族学与文化学","state":"closed",
+    "children":[
+      {"id":"3ag1","text":"民族研究"}, {"id":"3ag2","text":"世界民族"},
+      {"id":"3ag3","text":"民俗研究"}, {"id":"3ag4","text":"文化遗产"}]
+  },
+  {"id":"3ah","text":"新闻学与传播学","state":"closed",
+    "children":[
+      {"id":"3ah1","text":"新闻与传播研究"}, {"id":"3ah2","text":"编辑学报"}, {"id":"3ah3","text":"现代传播"}, {"id":"3ah4","text":"出版发行研究"}]
+  },
+  {"id":"3ai","text":"教育学","state":"closed",
+    "children":[
+      {"id":"3ai1","text":"北京大学教育评论"}, {"id":"3ai2","text":"清华大学教育研究"}, {"id":"3ai3","text":"高等教育研究"},
+      {"id":"3ai4","text":"比较教育研究"}, {"id":"3ai5","text":"华东师范大学学报(教科版)"}, {"id":"3ai6","text":"中国电化教育"},
+      {"id":"3ai7","text":"电化教育研究"}]
+  },
+  {"id":"3aj","text":"体育学","state":"closed",
+    "children":[
+      {"id":"3aj1","text":"北京体育大学学报"}, {"id":"3aj2","text":"上海体育学院学报"}, {"id":"3aj3","text":"中国体育科技"}]
+  },
+  {"id":"3ak","text":"统计学","state":"closed",
+    "children":[
+      {"id":"3ak1","text":"统计研究"}, {"id":"3ak2","text":"数理统计与管理"}]
+  },
+  {"id":"3al","text":"心理学","state":"closed",
+    "children":[
+      {"id":"3al1","text":"心理科学"}, {"id":"3al2","text":"心理发展与教育"}]
+  },
+  {"id":"3am","text":"人文经济地理","state":"closed",
+    "children":[
+      {"id":"3am1","text":"经济地理"}, {"id":"3am2","text":"旅游学刊"}, {"id":"3am3","text":"城市规划学刊"}]
+  },
+  {"id":"3an","text":"综合性社科期刊","state":"closed",
+    "children":[
+      {"id":"3an1","text":"文艺研究"}, {"id":"3an2","text":"文史哲"}, {"id":"3an3","text":"社会科学"},
+      {"id":"3an4","text":"学术月刊"}, {"id":"3an5","text":"学术研究"}, {"id":"3an6","text":"中国高校社会科学"}]
+  },
+  {"id":"3ao","text":"高校综合性学报","state":"closed",
+    "children":[
+      {"id":"3ao1","text":"中国人民大学学报"}, {"id":"3ao2","text":"北京大学学报(哲学社会科学版)"},
+      {"id":"3ao3","text":"浙江大学学报(人文社会科学版)"}, {"id":"3ao4","text":"清华大学学报(社会科学版)"},
+      {"id":"3ao5","text":"北京师范大学学报(社会科学版)"}, {"id":"3ao6","text":"南京大学学报(哲学人文科学社会科学版)"},
+      {"id":"3ao7","text":"中山大学学报(社会科学版)"}, {"id":"3ao8","text":"吉林大学社会科学学报"},
+      {"id":"3ao9","text":"复旦学报（社会科学版)"}, {"id":"3aoa","text":"武汉大学学报(社会科学版)"},
+      {"id":"3aob","text":"厦门大学学报(社会科学版)"}, {"id":"3aoc","text":"四川大学学报(哲学社会科学版)"},
+      {"id":"3aod","text":"南开学报(哲学社会科学版)"}
+    ]
+  }
+]

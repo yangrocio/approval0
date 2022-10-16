@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.TjtDao">
+
+
+    <select id="getSDepartmentBarChart" resultType="com.aynu.bean.BarChartDepartment">
+        SELECT department,COUNT(1) AS SUM,YEAR(systime) AS YEAR FROM ${selecttype}
+        WHERE  YEAR(systime) =#{year}  and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR,department
+        ORDER BY SUM DESC
+    </select>
+
+    <select id="getSTeacherBarChart" resultType="com.aynu.bean.BarChartTeacher">
+       SELECT department,NAME,number,COUNT(1) AS SUM FROM ${selecttype} WHERE
+       YEAR(systime) =#{year}  and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+       GROUP BY department,NAME,number ORDER BY SUM DESC
+        limit 15
+    </select>
+
+    <select id="getCountChart" resultType="com.aynu.bean.CountChart">
+        SELECT COUNT(1) as count,YEAR(systime) as year FROM ${selecttype} WHERE
+        YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime)
+    </select>
+
+</mapper>

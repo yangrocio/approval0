@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.QklwDao">
+
+    <select id="selectQklwByDetail" resultType="Qklw">
+        select * from qklw where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="username!='-1'">
+            and number = #{username}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start }
+        </if>
+        <if test="end!='-1'">
+            and systime  &lt;= #{end }
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus  = #{judgestatus}
+        </if>
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '3'  or judgestatus = '4' or judgestatus = '5' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and (   judgestatus = '2' or judgestatus = '3'   or judgestatus = '5' )
+        </if>
+        order by systime desc,department desc,judgestatus,points desc
+    </select>
+
+    <select id="selectQklwByDetail2" resultType="Qklw">
+        select * from qklw where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="username!='-1'">
+            and number = #{username}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start }
+        </if>
+        <if test="end!='-1'">
+            and systime  &lt;= #{end }
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus  = #{judgestatus}
+        </if>
+        <if test="timu!='-1'">
+            and Timu like '%${timu}%'
+        </if>
+
+        <if test="dyzz!='-1'">
+            and DYZZ like '%${dyzz}%'
+        </if>
+
+        <if test="qtzz!='-1'">
+            and QTZZ like '%${qtzz}%'
+        </if>
+
+        <if test="type!='-1'">
+            and Type like '%${type}%'
+        </if>
+
+        <if test="fbqk!='-1'">
+            and QiKanName like '%${fbqk}%'
+        </if>
+
+        <if test="time!='-1'">
+            and Time like '%${time}%'
+        </if>
+
+        <if test="fq!='-1'">
+            and fq like '%${fq}%'
+        </if>
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '3'  or judgestatus = '4' or judgestatus = '5' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and (   judgestatus = '2' or judgestatus = '3'   or judgestatus = '5' )
+        </if>
+        order by systime desc,department desc,judgestatus,points desc
+    </select>
+
+    <insert id="insertQklw" parameterType="Qklw">
+        insert into qklw(name,number,department,timu,dyzz,qtzz,type,qikanname,
+        jqnumber,page,time,rank,zishu,reward,points,fq,remark,yxyz,fjsc,judgestatus,systime)
+        values(#{name},#{number},#{department},#{timu},#{dyzz},#{qtzz},#{type},#{qikanname},
+        #{jqnumber},#{page},#{time},#{rank},#{zishu},#{reward},#{points},#{fq},#{remark},#{yxyz},
+        #{fjsc},#{judgestatus},#{systime})
+    </insert>
+    <insert id="insertExcel" parameterType="Cgzh">
+        insert into qklw(name,number,department,timu,dyzz,qtzz,type,qikanname,
+        jqnumber,page,time,rank,zishu,reward,points,fq,remark,yxyz,fjsc,judgestatus,systime)
+        values
+        <foreach collection="list" item="data"  separator=",">
+            (
+            #{data.name},#{data.number},#{data.department},#{data.timu},#{data.dyzz},#{data.qtzz},#{data.type},#{data.qikanname},
+            #{data.jqnumber},#{data.page},#{data.time},#{data.rank},#{data.zishu},#{data.reward},#{data.points},
+            #{data.fq},#{data.remark},#{data.yxyz},
+            #{data.fjsc},#{data.judgestatus},#{data.systime}
+            )
+        </foreach>
+
+    </insert>
+    <delete id="deleteQklw" parameterType="java.util.List">
+        delete from qklw where department=#{department} and number=#{number} and qid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </delete>
+    <delete id="deleteById" parameterType="java.util.List">
+        delete from qklw where qid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </delete>
+    <select id="showQklw" resultType="Qklw">
+        select * from qklw where  qid=#{id}
+    </select>
+
+    <update id="updateQklw" parameterType="Qklw">
+        update qklw set timu=#{timu},dyzz=#{dyzz}, qtzz=#{qtzz},type=#{type},qikanname=#{qikanname},jqnumber=#{jqnumber},
+        page=#{page},time=#{time}, rank=#{rank},zishu=#{zishu},reward=#{reward},points=#{points},remark=#{remark},
+        fq=#{fq},yxyz=#{yxyz},judgestatus=#{judgestatus}
+        <if test='fjsc!=null'>
+            , fjsc=#{fjsc}
+        </if>
+        <if test='systime!=null'>
+            ,systime=#{systime}
+        </if>
+        where  qid=#{qid}
+    </update>
+
+    <update id="updateQklwByHigh" parameterType="com.aynu.dto.Audit">
+        update qklw set departmentopinion=#{departmentopinion},schoolopinion=#{schoolopinion},judgestatus=#{judgestatus}
+        where qid in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </update>
+
+    <select id="getFileNameByList" parameterType="java.util.List" resultType="String">
+        select fjsc from qklw where qid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </select>
+    <!--and -->
+
+    <select id="selectQklwByDiff" resultType="Qklw">
+        select * from qklw where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+
+        and judgestatus ='3'
+        order by systime desc,department
+    </select>
+
+    <select id="getExcelJson" resultType="map">
+        select
+        <foreach collection="params" item="param"  separator=",">${param}</foreach>
+        from qklw where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime &lt;= #{end}
+        </if>
+        and judgestatus ='3'
+    </select>
+
+    <select id="getCountChart" resultType="com.aynu.bean.CountChart">
+        SELECT COUNT(1) as count,YEAR(systime) as year FROM qklw WHERE
+        YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime);
+    </select>
+
+
+
+
+</mapper>

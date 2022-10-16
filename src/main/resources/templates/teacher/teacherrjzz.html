@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div  th:replace="teacher/teacherheader :: teacherheader"></div>
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-mini"><b>科研处</b></span>
+            <span class="logo-lg"><b>成果管理</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                </p>
+                            </li>
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()" class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()" class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div th:replace="teacher/teachermenu :: teachermenu"></div>
+        </section>
+    </aside>
+
+
+    <div class="content-wrapper">
+
+        <section class="content-header">
+            <h1>
+                软件著作
+
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li><a href="#">软件著作</a></li>
+            </ol>
+
+
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <!-- .box-body -->
+            <div class="box box-primary">
+                <div class="box-body">
+                    <!-- 数据表格 -->
+                    <div class="table-box">
+
+                        <!--工具栏-->
+                        <div class="pull-left">
+                            <div class="form-group form-inline">
+
+                            <button type="button" class="btn btn-xs bg-olive" onclick="gorjzzwrite()"><i
+                                            class="fa fa-plus-square-o"></i>添加
+                                    </button>
+                                    <button type="button" class="btn btn-xs bg-olive" onclick='rjzzdelete()'><i
+                                            class="fa fa-trash-o"></i>删除
+                                    </button>
+                                    <button type="button" class="btn btn-xs bg-olive" onclick='rjzzshow()'><i
+                                            class="fa fa-pencil-square-o"></i>查看
+                                    </button>
+                                    <button type="button" class="btn btn-xs bg-olive" onclick='rjzzupdate()'><i
+                                            class="fa  fa-pencil-square-o"></i>编辑
+                                    </button>
+                                    <button type="button" class="btn btn-xs bg-olive" onclick='ExcelCheckboxModal()'><i class="fa fa-save"></i>
+                                        导出
+                                    </button>
+                                    <button type="button" class="btn btn-xs bg-olive" onclick="downloadrjzzfjsc()"><i
+                                            class="fa fa-arrow-circle-o-down"></i>批量下载附件
+                                    </button>
+                            <div class="modal fade bs-example-modal-lg" id="selectExcelshow" tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <h4 class="modal-title">筛选/选择属性</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="tab-pane">
+                                                <div class="row data-type">
+                                                    <div class="radio col-md-12"><label><input type="checkbox" id="ExcelAll" value="多选">多选</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="department">院系</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="number">工号</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="name">姓名</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="xmname">名称</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="dyzz">第二著作人</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="qtzz">其它作者</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="djnumber">登记号</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="sydw">授予单位</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="finishtime">开发完成时间</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="djtime">软件著作权登记日</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="bqtype">版权类型</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="syfs">权利取得方式</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="points">业绩点</label></div>
+                                                    <div class="radio col-md-2"><label><input type="checkbox" name="ExcelRows" value="fq">备注</label></div>
+
+
+                                                    <div class="col-md-12 data text-center">
+                                                        <button type="button" class="btn bg-olive"
+                                                                onclick="rjzzExcelDownload()">导出Excel
+                                                        </button>
+                                                        <button type="button" class="btn bg-olive"
+                                                                onclick="ExcelCheckboxCancle()">取消
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal -->
+                                </div>
+                            </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="modal fade bs-example-modal-lg" id="rjzzshowmodal" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">数据展示</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="tab-pane">
+                                            <div class="row data-type">
+
+                                                <div class="col-md-2 title" >名称</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="xmName2" disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title" >第二著作人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="DYZZ2" disabled="disabled">
+                                                </div>
+
+
+
+                                                <div class="col-md-2 title" >其它作者</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="QTZZ2" disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title" >登记号</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="DJNumber2" disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title" >授予单位</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="SYDW2" value="国家版权局" disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title" >开发完成时间</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control"  id="FinishTime2" disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title" >软件著作权登记日</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control"  id="DJTime2" disabled="disabled">
+                                                </div>
+
+
+
+                                                <div class="col-md-2 title" >版权类型</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="BQType2" value="软件著作权" disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title" >权利取得方式</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="SYFS2" value="原始取得" disabled="disabled">
+                                                </div>
+                                                <div class="col-md-2 title" >备注</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="fq2"  disabled="disabled">
+                                                </div>
+                                                <div class="col-md-2 title" >业绩点</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="Points2" value="25" readonly disabled="disabled">
+                                                </div>
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </div>
+                        <div class="modal fade bs-example-modal-lg" id="rjzzupdatemodal" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">数据展示</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="tab-pane">
+                                            <div class="row data-type">
+
+                                                <div class="col-md-2 title mast" >名称</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="xmName">
+                                                    <input type="hidden" class="form-control" id="rid" >
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >第二著作人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="DYZZ">
+                                                </div>
+
+
+
+                                                <div class="col-md-2 title mast" >其它作者</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="QTZZ">
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >登记号</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="DJNumber">
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >授予单位</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="SYDW" value="国家版权局">
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >开发完成时间</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control"  id="FinishTime">
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >软件著作权登记日</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control"  id="DJTime">
+                                                </div>
+
+
+
+                                                <div class="col-md-2 title mast" >版权类型</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="BQType" value="软件著作权">
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >权利取得方式</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="SYFS" value="原始取得">
+                                                </div>
+
+                                                <div class="col-md-2 title mast" >业绩点</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="number" class="form-control"  id="Points" value="70" >
+                                                </div>
+                                                <div class="col-md-2 title" >备注</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control"  id="fq" >
+                                                </div>
+                                                <div class="col-md-2 title mast" >附件上传</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="file" class="form-control"  id="FJSC" accept=".pdf">
+                                                </div>
+
+                                                <input type="text" class="form-control" id="judgestatusdisabled" style="display: none" >
+
+
+                                                <div class="col-md-12 data text-center">
+                                                    <button type="button" class="btn bg-maroon" onclick="rjzzupdatesubmit()">更新</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </div>
+
+
+                        <div class="box-tools pull-right">
+                                <table>
+                                    <tr>
+                                        <td>开始时间：</td>
+                                        <td>
+                                            <input type="date" class="form-control input-sm" id="start" th:value="${start}">
+                                        </td>
+                                        <td>结束时间：</td>
+                                        <td>
+                                            <input type="date" class="form-control input-sm" id="end" th:value="${end}">
+                                        </td>
+                                        <td>审核状态：</td>
+                                        <td>
+                                            <select id="judgestatus" class="form-control">
+                                                <option value="-1" th:selected="-1==${judgestatus}">请选择</option>
+                                                <option value="1" th:selected="1==${judgestatus}">等待院系审核</option>
+                                                <option value="2" th:selected="2==${judgestatus}">等待学校审核</option>
+                                                <option value="3" th:selected="3==${judgestatus}">审核通过</option>
+                                                <option value="4" th:selected="4==${judgestatus}">院系退回</option>
+                                                <option value="5" th:selected="5==${judgestatus}">学校退回</option>
+                                                <option value="100" th:selected="100==${judgestatus}">待补全</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-default" onclick="gorjzzBydetail()"><i class="fa fa-search"></i>搜索</button>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                        </div>
+                        <!--工具栏/-->
+                        <!--工具栏/-->
+                        <!--数据列表-->
+                        <table id="dataList" class="totable table table-bordered table-striped table-hover dataTable">
+                            <thead>
+                            <tr>
+                                <th class="text-center" width="1%">
+                                    <input type="checkbox" id="selall" class="icheckbox_square-blue">
+                                </th>
+                                <td class="text-center" width="4%">项目名称</td>
+                                <td class="text-center" width="4%">第二著作人</td>
+                                <td class="text-center" width="4%">登记号</td>
+                                <td class="text-center" width="4%">业绩点</td>
+                                <td class="text-center" width="4%">版权类型</td>
+                                <td class="text-center" width="4%">软件著作权登记日</td>
+                                <td class="text-center" width="4%">附件</td>
+                                <td class="text-center" width="4%">审核状态</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="rjzz:${pageInfo.list}">
+                                <td>
+                                    <input  name="selected" type="checkbox" th:value="${rjzz.rid}" >
+                                </td>
+
+                                <td th:text="${rjzz.xmname}"  th:title="${rjzz.xmname}"  class="txt"></td>
+                                <td th:text="${rjzz.dyzz}"  th:title="${rjzz.dyzz}"  class="txt"></td>
+                                <td th:text="${rjzz.djnumber}"  th:title="${rjzz.djnumber}"  class="txt"></td>
+                                <td th:text="${rjzz.points}"  th:title="${rjzz.points}"  class="txt"></td>
+                                <td th:text="${rjzz.bqtype}"  th:title="${rjzz.bqtype}"  class="txt"></td>
+                                <td th:text="${rjzz.djtime}"  th:title="${rjzz.djtime}"  class="txt"></td>
+                                <td name="fjsc" style="display: none" th:text="${rjzz.fjsc}"></td>
+                                <td>
+                                    <a class="btn btn-xs bg-olive" th:onclick="onlineshow([[${rjzz.fjsc}]])">预览</a>
+                                    <a class="btn btn-xs bg-olive" th:onclick="downloadfile([[${rjzz.fjsc}]])">下载</a>
+                                </td>
+                                <td name="judgestatus" style="display: none" th:text="${rjzz.judgestatus}"></td>
+                                <!--审核显示部分 -->
+                                <!--th:text="${hylw.judgestatus}"-->
+                                <td>
+                                            <span th:switch="${rjzz.judgestatus}">
+                                                <p th:case="1">等待院系审核</p>
+                                                <p th:case="2">等待学校审核</p>
+                                                <p th:case="3">审核通过</p>
+                                                <p th:case="4">
+                                                    <button class="btn btn-xs bg-olive"
+                                                            th:onclick="alert([[${rjzz.departmentopinion}]])">院系退回</button>
+                                                </p>
+                                                <p th:case="5">
+                                                    <button class="btn btn-xs bg-olive"
+                                                            th:onclick="alert([[${rjzz.schoolopinion}]])">学校退回</button>
+                                                </p>
+                                                <p th:case="100">待完善</p>
+                                            </span>
+                                </td>
+
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer no-margin-top">
+                    <div class="col-md-6">
+                        当前第[[${pageInfo.pageNum}]]页,共 [[${pageInfo.pages}]] 页。一共[[${pageInfo.total}]]条记录
+                    </div>
+
+                    <ul class="pagination pull-right no-margin">
+                        <li th:if="${pageInfo.hasPreviousPage}">
+                            <a th:onclick="|javascript:gorjzznext(1)|">首页</a>
+                        </li>
+
+
+                        <!--遍历条数-->
+                        <li th:each="nav:${pageInfo.navigatepageNums}">
+                            <a th:onclick="|javascript:gorjzznext(${nav})|" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                            <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}"
+                                  th:text="${nav}"></span>
+                        </li>
+                        <li>
+                            <a th:onclick="|javascript:gorjzznext(${pageInfo.pages})|">尾页</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+    </div>
+    </div>
+</div>
+<div  th:replace="teacher/teacherfooter :: teacherfooter"></div>
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+    });
+    setSidebarActive("rjzz");
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+
+    // 列表按钮   让按钮变大
+    $("#dataList td input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+    });
+    // 全选操作  全选操作
+    $("#selall").click(function() {
+        var clicks = $(this).is(':checked');
+        if (!clicks) {
+            $("#dataList td input[type='checkbox']").iCheck("uncheck");
+        } else {
+            $("#dataList td input[type='checkbox']").iCheck("check");
+        }
+        $(this).data("clicks", !clicks);
+    });
+</script>
+</body>
+
+</html>

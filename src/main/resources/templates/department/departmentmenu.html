@@ -1,0 +1,239 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<ul class="sidebar-menu" th:fragment="departmentmenu">
+
+
+    <li class="header">菜单</li>
+
+    <!-- 菜单 -->
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>论文管理</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li id="hylw">
+                <a onclick="godhylwpage()">
+                    <i class="fa fa-circle-o"></i> 会议论文
+                </a>
+            </li>
+
+            <li id="qklw">
+                <a onclick="godqklwpage()">
+                    <i class="fa fa-circle-o"></i> 期刊论文
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>著作管理</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li id="xszz">
+                <a onclick="godxszzpage()">
+                    <i class="fa fa-circle-o"></i> 学术著作
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>纵向项目管理</span>
+        </a>
+        <ul class="treeview-menu">
+            <li id="hpxm">
+                <a onclick="godhpxmpage()">
+                    <i class="fa fa-circle-o"></i> 获批项目
+                </a>
+            </li>
+            <li id="jxys">
+                <a onclick="godjxyspage()">
+                    <i class="fa fa-circle-o"></i> 结项验收
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>横向项目管理</span>
+        </a>
+        <ul class="treeview-menu">
+            <li id="hxlx">
+                <a onclick="godhxlxpage()">
+                    <i class="fa fa-circle-o"></i> 横向立项
+                </a>
+            </li>
+            <li id="hxxm">
+                <a onclick="godhxxmpage()">
+                    <i class="fa fa-circle-o"></i> 横向结项
+                </a>
+            </li>
+
+
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>知识产权管理</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li id="rjzz">
+                <a onclick="godrjzzpage()">
+                    <i class="fa fa-circle-o"></i> 软件著作
+                </a>
+            </li>
+
+            <li id="hpzl">
+                <a onclick="godhpzlpage()">
+                    <i class="fa fa-circle-o"></i> 获批专利
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>学术活动</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li id="xsch">
+                <a onclick="godxschpage()">
+                    <i class="fa fa-circle-o"></i> 学术称号
+                </a>
+            </li>
+
+            <li id="xsjl">
+                <a onclick="godxsjlpage()">
+                    <i class="fa fa-circle-o"></i> 学术交流
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>奖励管理</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li id="hpjl">
+                <a onclick="godhpjlpage()">
+                    <i class="fa fa-circle-o"></i> 获批奖励
+                </a>
+            </li>
+
+            <li id="ymhj">
+                <a onclick="godymhjpage()">
+                    <i class="fa fa-circle-o"></i> 音美展览比赛获奖
+                </a>
+            </li>
+
+            <li id="tyhj">
+                <a onclick="godtyhjpage()">
+                    <i class="fa fa-circle-o"></i> 体育比赛获奖
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>成果应用管理</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <!--<li id="cg">-->
+                <!--<a onclick="godcgpage()">-->
+                    <!--<i class="fa fa-circle-o"></i> 成果-->
+                <!--</a>-->
+            <!--</li>-->
+            <li id="zkjs">
+                <a onclick="godzkjspage()">
+                    <i class="fa fa-circle-o"></i>智库建设
+                </a>
+            </li>
+            <li id="cgzh">
+                <a onclick="godcgzhpage()">
+                    <i class="fa fa-circle-o"></i>成果转化
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>科研管理</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li id="ptgl">
+                <!--            <a onclick="goscgzhpage()">-->
+                <a onclick="goptgl()">
+                    <i class="fa fa-circle-o"></i>平台管理
+                </a>
+            </li>
+
+            <li id="tdgl">
+                <a onclick="gorctdgl()">
+                    <i class="fa fa-circle-o"></i>人才团队管理
+                </a>
+            </li>
+        </ul>
+    </li>
+
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>年度汇总</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li id="mxhzb">
+                <a onclick="gomxhzb()">
+                    <i class="fa fa-circle-o"></i>明细汇总表
+                </a>
+            </li>
+
+            <li id="form">
+                <a onclick="goform()">
+                    <i class="fa fa-circle-o"></i>团队明细汇总表
+                </a>
+            </li>
+
+            <li id="tjb">
+                <a onclick="gotjb()">
+                    <i class="fa fa-circle-o"></i> 统计表
+                </a>
+            </li>
+            <li id="tjt">
+                <a onclick="gotjt()">
+                    <i class="fa fa-circle-o"></i> 统计图
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+</ul>
+
+

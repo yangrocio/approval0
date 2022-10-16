@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.XsjlDao">
+
+    <select id="selectXsjlByDetail" resultType="Xsjl">
+        select * from xsjl where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="username!='-1'">
+            and number = #{username}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime &lt;= #{end}
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus  = #{judgestatus}
+        </if>
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '3'  or judgestatus = '4' or judgestatus = '5' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and (   judgestatus = '2' or judgestatus = '3'   or judgestatus = '5' )
+        </if>
+        order by systime desc,department desc,judgestatus,points desc
+    </select>
+
+    <select id="selectXsjlByDetail2" resultType="Xsjl">
+        select * from xsjl where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="username!='-1'">
+            and number = #{username}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime &lt;= #{end}
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus  = #{judgestatus}
+        </if>
+        <if test="XMName!='-1'">
+            and xmName like '%${XMName}%'
+        </if>
+        <if test="CYRY!='-1'">
+            and CYRY like '%${CYRY}%'
+        </if>
+        <if test="Rank!='-1'">
+            and `Rank` like '%${Rank}%'
+        </if>
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '3'  or judgestatus = '4' or judgestatus = '5' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and (   judgestatus = '2' or judgestatus = '3'   or judgestatus = '5' )
+        </if>
+        order by systime desc,department desc,judgestatus,points desc
+    </select>
+
+    <insert id="insertXsjl" parameterType="Xsjl">
+        insert into xsjl(number,name,department,xmname,cyry,wheres,time,zbdw,fq,
+        rank,lunwen,filename,fjsc,judgestatus,points,systime,fayan)
+        values(#{number},#{name},#{department},#{xmname},#{cyry},#{wheres},#{time},#{zbdw},#{fq},
+        #{rank},#{lunwen},#{filename},#{fjsc},#{judgestatus},#{points},#{systime},#{fayan})
+    </insert>
+    <insert id="insertExcel" parameterType="Xsjl">
+        insert into xsjl(number,name,department,xmname,cyry,wheres,time,zbdw,fq,
+        rank,lunwen,filename,fjsc,judgestatus,points,systime,fayan)
+        values
+        <foreach collection="list" item="data"  separator=",">
+            (
+            #{data.number},#{data.name},#{data.department},#{data.xmname},#{data.cyry},#{data.wheres},#{data.time},#{data.zbdw},#{data.fq},
+            #{data.rank},#{data.lunwen},#{data.filename},#{data.fjsc},#{data.judgestatus},#{data.points},#{data.systime},#{data.fayan}
+            )
+        </foreach>
+
+    </insert>
+    <delete id="deleteXsjl" parameterType="java.util.List">
+        delete from xsjl where department=#{department} and number=#{number} and xid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </delete>
+    <delete id="deleteById" parameterType="java.util.List">
+        delete from xsjl where xid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </delete>
+    <select id="showXsjl" resultType="Xsjl">
+        select * from xsjl where  xid=#{id}
+    </select>
+
+    <update id="updateXsjl" parameterType="Xsjl">
+        update xsjl set xmname=#{xmname},cyry=#{cyry}, wheres=#{wheres},time=#{time},zbdw=#{zbdw},rank=#{rank},fq=#{fq},
+        lunwen=#{lunwen},filename=#{filename}, judgestatus=#{judgestatus},points=#{points},fayan=#{fayan}
+        <if test='fjsc!=null'>
+            , fjsc=#{fjsc}
+        </if>
+        <if test='systime!=null'>
+            ,systime=#{systime}
+        </if>
+        where  xid=#{xid}
+    </update>
+
+
+    <update id="updateXsjlByHigh" parameterType="com.aynu.dto.Audit">
+        update xsjl set departmentopinion=#{departmentopinion},schoolopinion=#{schoolopinion},judgestatus=#{judgestatus}
+        where xid in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </update>
+
+
+    <select id="getFileNameByList" parameterType="java.util.List" resultType="String">
+        select fjsc from xsjl where xid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </select>
+    <!--and -->
+
+    <select id="selectXsjlByDiff" resultType="Xsjl">
+        select * from xsjl where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        and judgestatus ='3'
+        order by systime desc,department
+    </select>
+
+    <select id="getExcelJson" resultType="map">
+        select
+        <foreach collection="params" item="param"  separator=",">${param}</foreach>
+        from xsjl where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime &lt;= #{end}
+        </if>
+        and judgestatus ='3'
+    </select>
+
+    <select id="getCountChart" resultType="com.aynu.bean.CountChart">
+        SELECT COUNT(1) as count,YEAR(systime) as year FROM xsjl WHERE
+        YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime);
+    </select>
+</mapper>

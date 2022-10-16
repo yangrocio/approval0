@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.CgDao">
+
+    <select id="selectCgByDetail" resultType="Cg">
+        select * from cg where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="username!='-1'">
+            and number = #{username}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime &lt;= #{end}
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus = #{judgestatus}
+        </if>
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '3'  or judgestatus = '4' or judgestatus = '5' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and (   judgestatus = '2' or judgestatus = '3'   or judgestatus = '5' )
+        </if>
+        order by systime desc,department desc,judgestatus,points desc
+    </select>
+
+    <insert id="insertCg" parameterType="Cg">
+        insert into cg(number,name,department,cgname,cgtype,dyzz,qtzz,cnbm,
+        cgdz,time,points,reward,fjsc,judgestatus,systime)
+        values(#{number},#{name},#{department},#{cgname},#{cgtype},#{dyzz},#{qtzz},#{cnbm},
+        #{cgdz},#{time},#{points},#{reward},#{fjsc},#{judgestatus},#{systime})
+    </insert>
+
+
+    <delete id="deleteCg" parameterType="java.util.List">
+        delete from cg where department=#{department} and number=#{number} and cid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </delete>
+    <select id="showCg" resultType="Cg">
+        select * from cg where  cid=#{id}
+    </select>
+
+    <update id="updateCg" parameterType="Cg">
+        update cg set cgname=#{cgname},cgtype=#{cgtype},dyzz=#{dyzz},qtzz=#{qtzz},
+        cnbm=#{cnbm},cgdz=#{cgdz},time=#{time},
+        points=#{points},reward=#{reward},
+        judgestatus=#{judgestatus}
+        <if test='fjsc!=null'>
+            , fjsc=#{fjsc}
+        </if>
+        <if test='systime!=null'>
+            ,systime=#{systime}
+        </if>
+        where  cid=#{cid}
+    </update>
+
+
+    <update id="updateCgByHigh" parameterType="com.aynu.dto.Audit">
+        update cg set departmentopinion=#{departmentopinion},schoolopinion=#{schoolopinion},judgestatus=#{judgestatus}
+        where cid in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </update>
+
+    <select id="getFileNameByList" parameterType="java.util.List" resultType="String">
+        select fjsc from cg where cid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </select>
+    <!--and -->
+
+    <select id="selectCgByDiff" resultType="Cg">
+        select * from cg where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+
+        and judgestatus ='3'
+
+        order by systime desc,department
+    </select>
+
+</mapper>

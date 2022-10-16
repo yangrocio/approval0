@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.HpjlDao">
+    <select id="selectHpjlByDetail" resultType="Hpjl">
+        select * from hpjl where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="username!='-1'">
+            and number = #{username}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime &lt;= #{end}
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus  = #{judgestatus}
+        </if>
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '3'  or judgestatus = '4' or judgestatus = '5' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and (   judgestatus = '2' or judgestatus = '3'   or judgestatus = '5' )
+        </if>
+        order by systime desc,department desc,judgestatus,points desc
+    </select>
+
+    <select id="selectHpjlByDetail2" resultType="Hpjl">
+        select * from hpjl where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="username!='-1'">
+            and number = #{username}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime &lt;= #{end}
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus  = #{judgestatus}
+        </if>
+
+        <if test="CGName!='-1'">
+            and CGName like '%${CGName}%'
+        </if>
+        <if test="JLName!='-1'">
+            and JLName like '%${JLName}%'
+        </if>
+        <if test="DYHJR!='-1'">
+            and DYHJR like '%${DYHJR}%'
+        </if>
+        <if test="QTHJR!='-1'">
+            and QTHJR like '%${QTHJR}%'
+        </if>
+        <if test="JIXDBM!='-1'">
+            and JIXDBM like '%${JIXDBM}%'
+        </if>
+        <if test="JLRank!='-1'">
+            and JLRank like '%${JLRank}%'
+        </if>
+        <if test="HJTime!='-1'">
+            and HJTime like '%${HJTime}%'
+        </if>
+
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '3'  or judgestatus = '4' or judgestatus = '5' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and (   judgestatus = '2' or judgestatus = '3'   or judgestatus = '5' )
+        </if>
+        order by systime desc,department desc,judgestatus,points desc
+    </select>
+
+    <insert id="insertHpjl" parameterType="Hpjl">
+        insert into hpjl(number,name,department,cgname,jlname,dyhjr,qthjr,jixdbm,
+        zsnumber,hjtime,jlrank,hjrank,remark,points,kyjl,fjsc,judgestatus,systime)
+        values(#{number},#{name},#{department},#{cgname},#{jlname},#{dyhjr},#{qthjr},#{jixdbm},
+        #{zsnumber},#{hjtime},#{jlrank},#{hjrank},#{remark},#{points},#{kyjl},#{fjsc}
+        ,#{judgestatus},#{systime})
+    </insert>
+
+    <insert id="insertExcel" parameterType="Hpjl">
+        insert into hpjl(number,name,department,cgname,jlname,dyhjr,qthjr,jixdbm,
+        zsnumber,hjtime,jlrank,hjrank,remark,points,kyjl,fjsc,judgestatus,systime)
+        values
+        <foreach collection="list" item="data"  separator=",">
+            (
+            #{data.number},#{data.name},#{data.department},#{data.cgname},#{data.jlname},#{data.dyhjr},#{data.qthjr},#{data.jixdbm},
+            #{data.zsnumber},#{data.hjtime},#{data.jlrank},#{data.hjrank},#{data.remark},#{data.points},#{data.kyjl},#{data.fjsc}
+            ,#{data.judgestatus},#{data.systime}
+            )
+        </foreach>
+
+    </insert>
+
+    <delete id="deleteHpjl" parameterType="java.util.List">
+        delete from hpjl where department=#{department} and number=#{number} and hid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </delete>
+    <delete id="deleteById" parameterType="java.util.List">
+        delete from hpjl where hid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </delete>
+    <select id="showHpjl" resultType="Hpjl">
+        select * from hpjl where  hid=#{id}
+    </select>
+
+    <update id="updateHpjl" parameterType="Hpjl">
+        update hpjl set cgname=#{cgname},jlname=#{jlname}, dyhjr=#{dyhjr},qthjr=#{qthjr},jixdbm=#{jixdbm},zsnumber=#{zsnumber},
+        hjtime=#{hjtime},jlrank=#{jlrank}, remark=#{remark},points=#{points},kyjl=#{kyjl}
+        ,judgestatus=#{judgestatus}
+        <if test='fjsc!=null'>
+            , fjsc=#{fjsc}
+        </if>
+        <if test='systime!=null'>
+        ,systime=#{systime}
+    </if>
+        where  hid=#{hid}
+    </update>
+
+
+    <update id="updateHpjlByHigh" parameterType="com.aynu.dto.Audit">
+        update hpjl set departmentopinion=#{departmentopinion},schoolopinion=#{schoolopinion},judgestatus=#{judgestatus}
+        where hid in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </update>
+
+    <select id="getFileNameByList" parameterType="java.util.List" resultType="String">
+        select fjsc from hpjl where hid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </select>
+    <!--and -->
+
+    <select id="selectHpjlByDiff" resultType="Hpjl">
+        select * from hpjl where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+
+        and judgestatus ='3'
+
+        order by systime desc,department
+    </select>
+
+    <select id="getExcelJson" resultType="map">
+        select
+        <foreach collection="params" item="param"  separator=",">${param}</foreach>
+        from hpjl where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime &lt;= #{end}
+        </if>
+        and judgestatus ='3'
+    </select>
+
+    <select id="getCountChart" resultType="com.aynu.bean.CountChart">
+        SELECT COUNT(1) as count,YEAR(systime) as year FROM hpjl WHERE
+        YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime);
+    </select>
+</mapper>

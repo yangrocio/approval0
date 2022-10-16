@@ -1,0 +1,280 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="leaderheader">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>aynu</title>
+    <meta name="description" content="AdminLTE2定制版">
+    <meta name="keywords" content="AdminLTE2定制版">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link rel="stylesheet" th:href="@{/plugins/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/ionicons/css/ionicons.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/iCheck/square/blue.css}">
+    <link rel="stylesheet" th:href="@{/plugins/select2/select2.css}">
+    <link rel="stylesheet" th:href="@{/plugins/adminLTE/css/AdminLTE.css}">
+    <link rel="stylesheet" th:href="@{/plugins/adminLTE/css/skins/_all-skins.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/plugins/ionslider/ion.rangeSlider.css}">
+    <link rel="stylesheet" th:href="@{/plugins/ionslider/ion.rangeSlider.skinNice.css}">
+    <link rel="stylesheet" th:href="@{/plugins/bootstrap-slider/slider.css}">
+    <link rel="stylesheet" th:href="@{/plugins/treeview/bootstrap-treeview.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/combotree/easyui.css}">
+    <link rel="stylesheet" th:href="@{/plugins/twitter-bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/bootstrap-slider/bootstrap-slider.css}">
+</div>
+
+
+<div th:fragment="leaderfooter">
+    <footer class="main-footer" style="color: blue;">
+        欢迎 <strong th:text="${session.USER_SESSION.name}"></strong> 登陆安阳师范学院科研成果统计系统
+        用户角色：
+        <span th:switch="${session.USER_SESSION.roletype}">
+        <strong th:case="1">
+            教师
+        </strong>
+            <strong th:case="2">
+            院系管理员
+        </strong>
+            <strong th:case="3">
+            学校管理员
+        </strong>
+            <strong th:case="4">
+            超级管理员
+        </strong>
+            <strong th:case="5">
+            学校领导
+        </strong>
+        </span>
+        附件下载：
+        <a onclick="getRewardDocx()">安阳师范学院高水平成果奖励办法 </a>
+        <a onclick="getPointDocx()">安阳师范学院科学研究业绩点核算办法 </a>
+        邮箱:kyc@aynu.edu.cn
+    </footer>
+    <script th:src="@{/plugins/jQuery/jquery-2.2.3.min.js}"></script>
+    <script th:src="@{/plugins/jQueryUI/jquery-ui.min.js}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            let temp = $(".active:eq(1)").attr("id");
+            remainCount(temp);
+        })
+    </script>
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <script th:src="@{/plugins/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/plugins/raphael/raphael-min.js}"></script>
+    <script th:src="@{/plugins/iCheck/icheck.min.js}"></script>
+    <script th:src="@{/plugins/adminLTE/js/app.min.js}"></script>
+    <script th:src="@{/plugins/select2/select2.full.min.js}"></script>
+    <script th:src="@{/plugins/ionslider/ion.rangeSlider.min.js}"></script>
+    <script th:src="@{/plugins/bootstrap-slider/bootstrap-slider.js}"></script>
+    <script th:src="@{/plugins/combotree/jquery.easyui.min.js}"></script>
+    <script th:src="@{/plugins/combotree/jquery.combotree.js}"></script>
+    <script th:src="@{/js/login.js}"></script>
+    <script th:src="@{/js/school.js}"></script>
+</div>
+
+
+
+<ul class="sidebar-menu" th:fragment="leadermenu">
+
+
+    <li class="header">菜单</li>
+
+    <!-- 菜单 -->
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>论文管理</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li id="hylw">
+                <a onclick="goshylwpage()">
+                    <i class="fa fa-circle-o"></i> 会议论文
+
+                </a>
+            </li>
+
+            <li id="qklw">
+                <a onclick="gosqklwpage()">
+                    <i class="fa fa-circle-o"></i> 期刊论文
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a  href="#">
+            <i class="fa fa-circle-o"></i><span>著作管理</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li id="xszz">
+                <a onclick="gosxszzpage()">
+                    <i class="fa fa-circle-o"></i> 学术著作
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>纵向项目管理</span>
+        </a>
+        <ul class="treeview-menu">
+            <li id="hpxm">
+                <a onclick="goshpxmpage()">
+                    <i class="fa fa-circle-o"></i> 获批项目
+                </a>
+            </li>
+            <li id="jxys">
+                <a onclick="gosjxyspage()">
+                    <i class="fa fa-circle-o"></i> 结项验收
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>横向项目管理</span>
+        </a>
+        <ul class="treeview-menu">
+            <li id="hxlx">
+                <a onclick="goshxlxpage()">
+                    <i class="fa fa-circle-o"></i> 横向立项
+                </a>
+            </li>
+            <li id="hxxm">
+                <a onclick="goshxxmpage()">
+                    <i class="fa fa-circle-o"></i> 横向结项
+                </a>
+            </li>
+
+
+        </ul>
+    </li>
+
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>知识产权管理</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li id="rjzz">
+                <a onclick="gosrjzzpage()">
+                    <i class="fa fa-circle-o"></i> 软件著作
+                </a>
+            </li>
+
+            <li id="hpzl">
+                <a onclick="goshpzlpage()">
+                    <i class="fa fa-circle-o"></i> 获批专利
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>学术活动</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li id="xsch">
+                <a onclick="gosxschpage()">
+                    <i class="fa fa-circle-o"></i> 学术称号
+                </a>
+            </li>
+
+            <li id="xsjl">
+                <a onclick="gosxsjlpage()">
+                    <i class="fa fa-circle-o"></i> 学术交流
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>奖励管理</span>
+        </a>
+        <ul class="treeview-menu">
+
+            <li id="hpjl">
+                <a onclick="goshpjlpage()" >
+                    <i class="fa fa-circle-o"></i> 获批奖励
+                </a>
+            </li>
+
+            <li id="ymhj">
+                <a onclick="gosymhjpage()">
+                    <i class="fa fa-circle-o"></i> 音美展览比赛获奖
+                </a>
+            </li>
+
+            <li id="tyhj">
+                <a onclick="gostyhjpage()">
+                    <i class="fa fa-circle-o"></i> 体育比赛获奖
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>成果应用管理</span>
+        </a>
+        <ul class="treeview-menu">
+            <li id="zkjs">
+                <a onclick="goszkjspage()">
+                    <i class="fa fa-circle-o"></i>智库建设
+                </a>
+            </li>
+            <li id="cgzh">
+                <a onclick="goscgzhpage()">
+                    <i class="fa fa-circle-o"></i>成果转化
+                </a>
+            </li>
+
+        </ul>
+    </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-circle-o"></i><span>年度汇总</span>
+        </a>
+        <ul class="treeview-menu">
+            <li id="mxhzb">
+                <a onclick="gomxhzb()">
+                    <i class="fa fa-circle-o"></i>明细汇总表
+                </a>
+            </li>
+            <li id="tjb">
+                <a onclick="gotjb()">
+                    <i class="fa fa-circle-o"></i> 统计表
+                </a>
+            </li>
+            <li id="tjt">
+                <a onclick="gotjt()">
+                    <i class="fa fa-circle-o"></i> 统计图
+                </a>
+            </li>
+
+        </ul>
+    </li>
+</ul>
+
+

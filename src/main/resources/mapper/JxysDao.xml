@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aynu.dao.JxysDao">
+
+    <select id="selectJxysByDetail" resultType="Jxys">
+        select * from jxys where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="username!='-1'">
+            and number = #{username}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime &lt;= #{end}
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus = #{judgestatus}
+        </if>
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '3'  or judgestatus = '4' or judgestatus = '5' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and (   judgestatus = '2' or judgestatus = '3'   or judgestatus = '5' )
+        </if>
+        order by systime desc,department desc,judgestatus,points desc
+    </select>
+
+    <select id="selectJxysByDetail2" resultType="Jxys">
+        select * from jxys where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="username!='-1'">
+            and number = #{username}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime &lt;= #{end}
+        </if>
+        <if test="judgestatus!='-1'">
+            and judgestatus = #{judgestatus}
+        </if>
+        <if test="xmname!='-1'">
+            and xmname like '%${xmname}%'
+        </if>
+        <if test="hoster!='-1'">
+            and hoster like '%${hoster}%'
+        </if>
+        <if test="cyry!='-1'">
+            and cyry like '%${cyry}%'
+        </if>
+        <if test="xdbm!='-1'">
+            and xdbm like '%${xdbm}%'
+        </if>
+        <if test="xmly!='-1'">
+            and xmly like '%${xmly}%'
+        </if>
+        <if test="rank!='-1'">
+            and `rank` like '%${rank}%'
+        </if>
+        <if test="proproperty!='-1'">
+            and proproperty like '%${proproperty}%'
+        </if>
+        <if test="time!='-1'">
+            and time like '%${time}%'
+        </if>
+        <if test='roletype=="2" and judgestatus=="-1"'>
+            and ( judgestatus = '1' or  judgestatus = '2' or judgestatus = '3'  or judgestatus = '4' or judgestatus = '5' )
+        </if>
+        <if test='roletype=="3" and judgestatus=="-1"'>
+            and (   judgestatus = '2' or judgestatus = '3'   or judgestatus = '5' )
+        </if>
+        order by systime desc,department desc,judgestatus,points desc
+    </select>
+
+    <insert id="insertJxys" parameterType="Jxys">
+        insert into jxys(number,name,department,xmname,pronumber,xmly,rank,protype,
+        proproperty,hoster,xdbm,cyry,reward,time,remark,points,pstatus,fjsc,systime,judgestatus)
+        values(#{number},#{name},#{department},#{xmname},#{pronumber},#{xmly},#{rank},#{protype},
+        #{proproperty},#{hoster},#{xdbm},#{cyry},#{reward},#{time},#{remark},#{points},#{pstatus},
+        #{fjsc},#{systime},#{judgestatus})
+    </insert>
+    <insert id="insertExcel" parameterType="Jxys">
+        insert into jxys(number,name,department,xmname,pronumber,xmly,rank,protype,
+        proproperty,hoster,xdbm,cyry,reward,time,remark,points,pstatus,fjsc,systime,judgestatus)
+        values
+        <foreach collection="list" item="data"  separator=",">
+            (
+            #{data.number},#{data.name},#{data.department},#{data.xmname},#{data.pronumber},#{data.xmly},#{data.rank},#{data.protype},
+            #{data.proproperty},#{data.hoster},#{data.xdbm},#{data.cyry},#{data.reward},#{data.time},#{data.remark},#{data.points},#{data.pstatus},
+            #{data.fjsc},#{data.systime},#{data.judgestatus}
+            )
+        </foreach>
+
+    </insert>
+
+    <delete id="deleteJxys" parameterType="java.util.List">
+        delete from jxys where department=#{department} and number=#{number} and jid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </delete>
+    <delete id="deleteById" parameterType="java.util.List">
+        delete from jxys where jid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </delete>
+    <select id="showJxys" resultType="Jxys">
+        select * from jxys where  jid=#{id}
+    </select>
+
+    <update id="updateJxys" parameterType="Jxys">
+        update jxys set xmname=#{xmname},pronumber=#{pronumber},xmly=#{xmly},rank=#{rank},
+        protype=#{protype},proproperty=#{proproperty},hoster=#{hoster},
+        xdbm=#{xdbm},cyry=#{cyry},reward=#{reward},time=#{time},remark=#{remark},points=#{points},
+        pstatus=#{pstatus},judgestatus=#{judgestatus}
+        <if test='fjsc!=null'>
+            , fjsc=#{fjsc}
+        </if>
+        <if test='systime!=null'>
+            ,systime=#{systime}
+        </if>
+        where  jid=#{jid}
+    </update>
+
+
+    <update id="updateJxysByHigh" parameterType="com.aynu.dto.Audit">
+        update jxys set departmentopinion=#{departmentopinion},schoolopinion=#{schoolopinion},judgestatus=#{judgestatus}
+        where jid in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </update>
+
+    <select id="getFileNameByList" parameterType="java.util.List" resultType="String">
+        select fjsc from jxys where jid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">${id}</foreach>
+    </select>
+    <!--and -->
+
+    <select id="selectJxysByDiff" resultType="Jxys">
+        select * from jxys where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+
+        and judgestatus ='3'
+
+        order by systime desc,department
+    </select>
+
+    <select id="getExcelJson" resultType="map">
+        select
+        <foreach collection="params" item="param"  separator=",">${param}</foreach>
+        from jxys where 1=1
+        <if test="department!='-1'">
+            and department = #{department}
+        </if>
+        <if test="name!='-1'">
+            and name like '%${name}%'
+        </if>
+        <if test="number!='-1'">
+            and number = #{number}
+        </if>
+        <if test="start!='-1'">
+            and systime &gt;= #{start}
+        </if>
+        <if test="end!='-1'">
+            and systime &lt;= #{end}
+        </if>
+        and judgestatus ='3'
+    </select>
+
+    <select id="getCountChart" resultType="com.aynu.bean.CountChart">
+        SELECT COUNT(1) as count,YEAR(systime) as year FROM jxys WHERE
+        YEAR(systime) BETWEEN #{yearstart} AND #{yearend}
+        and judgestatus='3'
+        <if test="department!='全部院系'">
+            and department = #{department}
+        </if>
+        GROUP BY YEAR(systime);
+    </select>
+</mapper>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="teacher/teacherheader :: teacherheader"></div>
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-mini"><b>科研处</b></span>
+            <span class="logo-lg"><b>成果管理</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                </p>
+                            </li>
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()" class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()" class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+
+
+            <div th:replace="teacher/teachermenu :: teachermenu"></div>
+
+
+        </section>
+    </aside>
+
+
+    <div class="content-wrapper">
+
+        <section class="content-header">
+            <h1>
+                成果转化
+
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li><a href="#">成果转化</a></li>
+            </ol>
+
+
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <div class="box box-primary">
+
+                <div class="box-body">
+
+                    <!--基础控件-->
+                    <div class="tab-pane" id="tab-common">
+                        <div class="row data-type">
+                            <div class="col-md-2 title mast">转让成果名称</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="cgname">
+                            </div>
+
+
+                            <div class="col-md-2 title mast">转让类型</div>
+                            <div class="col-md-4 data ">
+                                <select id="zrlx" class="form-control">
+                                    <option>技术转让</option>
+                                    <option>技术开发</option>
+                                    <option>技术推广</option>
+                                    <option>决策咨询</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 title mast">转让到账经费(万)</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="zrdzjf" onchange="judgefunction()">
+                            </div>
+
+                            <div class="col-md-2 title mast">第一参与人</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="dyzz">
+                            </div>
+
+                            <div class="col-md-2 title mast">其它参与人</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="qtzz">
+                            </div>
+
+                            <div class="col-md-2 title mast">转化单位</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="zhdw">
+                            </div>
+
+                            <div class="col-md-2 title mast">转化时间</div>
+                            <div class="col-md-4 data">
+                                <input type="date" class="form-control" id="zhtime">
+                            </div>
+
+
+                            <div class="col-md-2 title mast">业绩点</div>
+                            <div class="col-md-4 data">
+                                <input type="number" class="form-control" id="points">
+                            </div>
+
+                            <div class="col-md-2 title ">科研奖励(万)</div>
+                            <div class="col-md-4 data">
+                                <input type="number" class="form-control" id="reward" value="0">
+                            </div>
+                            <div class="col-md-2 title">备注</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" id="fq"  >
+                            </div>
+                            <div class="col-md-2 title">上传附件</div>
+                            <div class="col-md-4 data">
+                                <input type="file" class="form-control" id="FJSC" accept=".pdf">
+                            </div>
+
+                            <div class="col-md-12 data text-center">
+                                <button type="button" class="btn bg-maroon" onclick="putcgzh()">提交</button>
+                                <!--<button type="button" class="btn bg-maroon">暂存</button>-->
+                                <button type="button" class="btn bg-default" onclick="history.back(-1);">返回</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--基础控件/-->
+
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<div th:replace="teacher/teacherfooter :: teacherfooter"></div>
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+
+    });
+
+
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+
+    // 列表按钮   让按钮变大
+    $("#dataList td input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+    });
+    // 全选操作  全选操作
+    $("#selall").click(function () {
+        var clicks = $(this).is(':checked');
+        if (!clicks) {
+            $("#dataList td input[type='checkbox']").iCheck("uncheck");
+        } else {
+            $("#dataList td input[type='checkbox']").iCheck("check");
+        }
+        $(this).data("clicks", !clicks);
+    });
+
+    setSidebarActive("cgzh");
+
+    function judgefunction() {
+        var zrdzjf = $("#zrdzjf").val();
+        let rew = null;
+        let point = null;
+        point = zrdzjf * 20
+        $("#points").val(point);
+    }
+</script>
+</body>
+
+</html>

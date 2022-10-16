@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="school/schoolheader :: schoolheader"></div>
+</head>
+
+<body class="hold-transition skin-red-light sidebar-mini">
+
+<div class="wrapper">
+
+    <!-- 页面头部 -->
+    <header class="main-header">
+
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <span class="logo-mini"><b>科研处</b></span>
+            <span class="logo-lg"><b>成果管理</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="hidden-xs" th:text="${session.USER_SESSION.name}"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p th:text="${session.USER_SESSION.name}">
+                                </p>
+                            </li>
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a onclick="goPersonPage()" class="btn btn-default btn-flat">修改个人信息</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a onclick="lougout()" class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- 页面头部 /-->
+
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div th:replace="school/schoolmenu:: schoolmenu"></div>
+        </section>
+    </aside>
+
+
+    <div class="content-wrapper">
+
+        <section class="content-header">
+            <h1>
+                科研管理
+
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li><a href="#">团队管理</a></li>
+            </ol>
+
+
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <!-- .box-body -->
+            <div class="box box-primary">
+                <div class="box-body">
+                    <!-- 数据表格 -->
+                    <div class="table-box">
+
+                        <!--工具栏-->
+                        <div class="pull-left">
+                            <div class="form-group form-inline">
+
+                                <button type="button" class="btn btn-xs bg-olive" title="添加" onclick='goteamwrite()'><i
+                                        class="fa fa-plus-square-o"></i> 添加
+                                </button>
+                                <button type="button" class="btn btn-xs bg-olive" onclick='teamdelete()'><i
+                                        class="fa fa-trash-o"></i>删除
+                                </button>
+                                <button type="button" class="btn btn-xs bg-olive" onclick='teamshow()'><i
+                                        class="fa fa-pencil-square-o"></i>查看
+                                </button>
+                                <button type="button" class="btn btn-xs bg-olive" onclick='teamupdate()'><i
+                                        class="fa  fa-pencil-square-o"></i>编辑
+                                </button>
+                                <button type="button" class="btn btn-xs bg-olive" onclick='ExcelCheckboxModal()'><i
+                                        class="fa fa-save"></i>
+                                    导出
+                                </button>
+                                <button type="button" class="btn btn-xs bg-olive" onclick="downloadTeamSubsidize()"><i
+                                        class="fa fa-arrow-circle-o-down"></i>批量下载附件
+                                </button>
+                                <div class="modal fade bs-example-modal-lg" id="selectExcelshow" tabindex="-1"
+                                     role="dialog"
+                                     aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-hidden="true">
+                                                    &times;
+                                                </button>
+                                                <h4 class="modal-title">筛选/选择属性</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="tab-pane">
+                                                    <div class="row data-type">
+                                                        <div class="radio col-md-12"><label><input type="checkbox"
+                                                                                                   id="ExcelAll"
+                                                                                                   value="多选">多选</label>
+                                                        </div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox"
+                                                                                                  name="ExcelRows"
+                                                                                                  value="department">院系</label>
+                                                        </div>
+
+
+                                                        <div class="radio col-md-2"><label><input type="checkbox"
+                                                                                                  name="ExcelRows"
+                                                                                                  value="name">团队名称</label>
+                                                        </div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox"
+                                                                                                  name="ExcelRows"
+                                                                                                  value="type">类型</label>
+                                                        </div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox"
+                                                                                                  name="ExcelRows"
+                                                                                                  value="no">编号</label>
+                                                        </div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox"
+                                                                                                  name="ExcelRows"
+                                                                                                  value="level">层次</label>
+                                                        </div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox"
+                                                                                                  name="ExcelRows"
+                                                                                                  value="source">来源</label>
+                                                        </div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox"
+                                                                                                  name="ExcelRows"
+                                                                                                  value="approve_department">批准部门</label>
+                                                        </div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox"
+                                                                                                  name="ExcelRows"
+                                                                                                  value="principal">负责人</label>
+                                                        </div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox"
+                                                                                                  name="ExcelRows"
+                                                                                                  value="approved_time">获批时间</label>
+                                                        </div>
+                                                        <div class="radio col-md-2"><label><input type="checkbox"
+                                                                                                  name="ExcelRows"
+                                                                                                  value="subsidize">资助总额</label>
+                                                        </div>
+                                                        <div class="col-md-12 data text-center">
+                                                            <button type="button" class="btn bg-olive"
+                                                                    onclick="teamExcelDownload()">导出Excel
+                                                            </button>
+                                                            <button type="button" class="btn bg-olive"
+                                                                    onclick="ExcelCheckboxCancle()">取消
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="modal fade bs-example-modal-lg" id="teamshowmodal" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <h4 class="modal-title">数据展示</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="tab-pane">
+                                            <div class="row data-type">
+
+                                                <div class="col-md-2 title">所属院部</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Dept2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">编号</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="No2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">团队名称</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="TeamName2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">类型</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Genre2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">来源</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Source2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">层次</div>
+                                                <div class="col-md-4 data">
+                                                    <select class="form-control" id="Gradation2">
+                                                        <option>国家级</option>
+                                                        <option>省部级</option>
+                                                        <option>地厅级</option>
+                                                        <option>校级</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2 title">资助总额</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control" id="Subsidize2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">批准部门</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="receiveApproval2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">负责人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Manager2"
+                                                           disabled="disabled">
+                                                </div>
+
+
+                                                <div class="col-md-2 title">获批时间</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control" id="receiveTime2"
+                                                           disabled="disabled">
+                                                </div>
+
+                                                <div class="col-md-2 title">附件</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="file" class="form-control" id="annex2" accept=".pdf">
+                                                </div>
+
+                                                <div class="col-md-12 data text-center">
+                                                    <button type="button" class="btn bg-maroon" onclick="TdglInsert()">添加</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </div>
+                        <div class="modal fade bs-example-modal-lg" id="teamupdatemodal" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <h4 class="modal-title">数据展示</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="tab-pane">
+                                            <div class="row data-type">
+
+                                                <div class="col-md-2 title mast">所属院部</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Dept">
+                                                    <input type="hidden" class="form-control" id="hid">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">编号</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" id="No" class="form-control">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">团队名称</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="TeamName">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">类型</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Genre">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">来源</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Source">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">负责人</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="text" class="form-control" id="Manager">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">资助总额</div>
+                                                <div class="col-md-4 data">
+                                                    <div id="Subsidize" class="col-md-11"></div>
+                                                </div>
+
+                                                <div class="col-md-4 data">
+                                                    <div id="Rank" class="col-md-11"></div>
+
+                                                </div>
+
+                                                <div class="col-md-2 title mast">层次</div>
+                                                <div class="col-md-4 data">
+                                                    <select id="Gradation" class="form-control">
+                                                        <option>不以级区分</option>
+                                                        <option>校级</option>
+                                                        <option>地厅级</option>
+                                                        <option>省部级</option>
+                                                        <option>国家级</option>
+                                                    </select>
+
+                                                </div>
+                                                <div class="col-md-2 title mast">获批时间</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="date" class="form-control" id="receiveTime">
+                                                </div>
+
+
+                                                <div class="col-md-2 title ">批准部门</div>
+                                                <div class="col-md-4 data">
+                                                    <input type="number" class="form-control" id="receiveApproval">
+                                                </div>
+
+                                                <div class="col-md-2 title mast">附件</div>
+                                                <div class="col-md-10 data">
+                                                    <input type="file" class="form-control" id="annex" accept=".pdf">
+                                                </div>
+
+                                                <input type="text" class="form-control" id="judgestatusdisabled"
+                                                       style="display: none">
+
+                                                <div class="col-md-12 data text-center">
+                                                    <button type="button" class="btn bg-maroon"
+                                                            onclick="teamupdatesubmit()">更新
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="box-tools pull-right ">
+                            <table>
+                                <tr>
+                                    <td>院系：</td>
+                                    <td>
+                                        <select id="departmenttop" class="form-control input-sm ">
+                                            <option value="-1" th:selected="-1==${department}">请选择</option>
+                                            <span th:each="de:${departments}">
+                                                <option th:value="${de.name}" th:text="${de.name}"
+                                                        th:selected="${de.name eq department}"></option>
+                                        </span>
+                                        </select>
+                                    </td>
+                                    <td>团队名称：</td>
+                                    <td>
+                                        <input type="text" class="form-control input-sm " id="name_platform"
+                                               th:value="${name}">
+                                    </td>
+                                    <td>最早获批时间：</td>
+                                    <td>
+                                        <input type="date" class="form-control input-sm" id="start" th:value="${start}">
+                                    </td>
+                                    <td>最晚获批时间：</td>
+                                    <td>
+                                        <input type="date" class="form-control  input-sm" id="end" th:value="${end}">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-default" onclick="goTdglBydetail()"><i
+                                                class="fa fa-search"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+
+                        <table id="dataList" class="totable table table-bordered table-striped table-hover dataTable">
+                            <thead>
+                            <tr>
+                                <th class="text-center" width="1%">
+                                    <input type="checkbox" id="selall" class="icheckbox_square-blue">
+                                </th>
+                                <th class="text-center" width="2%">所属院部</th>
+                                <th class="text-center" width="2%">团队名称</th>
+                                <th class="text-center" width="1%">编号</th>
+                                <th class="text-center" width="1%">类型</th>
+                                <th class="text-center" width="1%">来源</th>
+                                <th class="text-center" width="2%">层次</th>
+                                <th class="text-center" width="2%">资助总额</th>
+                                <th class="text-center" width="2%">批准部门</th>
+                                <th class="text-center" width="2%">负责人</th>
+                                <th class="text-center" width="2%">获批时间</th>
+                                <th class="text-center" width="2%">附件</th>
+                                <span th:if="${session.USER_SESSION.roletype} eq '3'">
+                                <th class="text-center" width="4%">操作</th>
+                                </span>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="list:${pageInfo.list}">
+                                <td>
+                                    <input name="selected" type="checkbox" th:value="${list.hid}">
+                                </td>
+                                <td th:text="${list.department}" th:title='${list.department}' class="txt"></td>
+                                <td th:text="${list.name}" th:title='${list.name}' class="txt"></td>
+                                <td th:text="${list.no}" th:title='${list.no}' class="txt"></td>
+                                <td th:text="${list.type}" th:title='${list.type}' class="txt"></td>
+                                <td th:text="${list.source}" th:title='${list.source}' class="txt"></td>
+                                <td th:text="${list.level}" th:title='${list.level}' class="txt"></td>
+                                <td th:text="${list.subsidize}" th:title='${list.subsidize}' class="txt"></td>
+                                <td th:text="${list.approve_department}" th:title='${list.approve_department}'
+                                    class="txt"></td>
+
+                                <td th:text="${list.principal}" th:title='${list.principal}' class="txt"></td>
+                                <td th:text="${list.approved_time}" th:title='${list.approved_time}' class="txt"></td>
+                                <td class="txt">
+                                    <a class="btn btn-xs bg-olive" th:onclick="onlineshow([[${list.annex}]])">预览</a>
+                                    <a class="btn btn-xs bg-olive" th:onclick="downloadfile([[${list.annex}]])">下载</a>
+                                </td>
+                                <td th:if="${session.USER_SESSION.roletype} eq '3'">
+                                    <button type="button" class="btn btn-xs bg-olive"
+                                            th:onclick='tdglUpdate([[${list.id}]])'>
+                                        <i class="fa  fa-pencil-square-o"></i>编辑
+                                    </button>
+                                    <button type="button" class="btn btn-xs bg-olive"
+                                            th:onclick='tdglDelete([[${list.id}]])'><i
+                                            class="fa  fa-pencil-square-o"></i>删除
+                                    </button>
+                                    <a class="btn btn-xs bg-olive"
+                                       th:onclick="showResetModalFileTdgl([[${list.id}]],
+                                       [[${list.annex}]],'团队管理',[[${list.department}]],[[${list.name}]])">
+                                        重传</a>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer no-margin-top">
+                    <div class="col-md-6">
+                        当前第[[${pageInfo.pageNum}]]页,共 [[${pageInfo.pages}]] 页。一共[[${pageInfo.total}]]条记录
+                    </div>
+
+                    <ul class="pagination pull-right no-margin">
+                        <li th:if="${pageInfo.hasPreviousPage}">
+                            <a th:onclick="|javascript:goTdglnext(1)|">首页</a>
+                        </li>
+
+
+                        <!--遍历条数-->
+                        <li th:each="nav:${pageInfo.navigatepageNums}">
+                            <a th:onclick="|javascript:goTdglnext(${nav})|" th:text="${nav}"
+                               th:if="${nav != pageInfo.pageNum}"></a>
+                            <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}"
+                                  th:text="${nav}"></span>
+                        </li>
+                        <li>
+                            <a th:onclick="|javascript:goTdglnext(${pageInfo.pages})|">尾页</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </section>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg" id="retransmissionFile" tabindex="-1"
+     role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="tab-pane">
+                    <div class="row data-type">
+                        <div class="col-md-12 title">文件重传</div>
+                        <div class="col-md-2 title">编号</div>
+                        <div class="col-md-4 data">
+                            <input type="text" class="form-control" id="newid" disabled>
+                        </div>
+
+                        <div class="col-md-2 title">类别</div>
+                        <div class="col-md-4 data">
+                            <input type="text" class="form-control" id="newtype" disabled>
+                        </div>
+
+                        <input type="hidden" class="form-control" id="newplatform" disabled>
+
+                        <input type="hidden" class="form-control" id="newdepartment" disabled>
+
+
+                        <div class="col-md-2 title">老文件名称</div>
+                        <div class="col-md-4 data">
+                            <input type="text" class="form-control" id="oldname" disabled>
+                        </div>
+                        <div class="col-md-2 title">更新的文件</div>
+                        <div class="col-md-4 data">
+                            <input type="file" class="form-control" id="annexFile" accept=".pdf">
+                        </div>
+
+                        <div class="col-md-12 data text-center">
+                            <button type="button" class="btn  btn-success" onclick="resetFileTdgl()">
+                                更新
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+
+<div th:replace="school/schoolfooter :: schoolfooter"></div>
+<script>
+    $(document).ready(function () {
+        // 选择框
+        $(".select2").select2();
+    });
+    setSidebarActive("tdgl");
+
+    // 设置激活菜单
+    function setSidebarActive(tagUri) {
+        var liObj = $("#" + tagUri);
+        if (liObj.length > 0) {
+            liObj.parent().parent().addClass("active");
+            liObj.addClass("active");
+        }
+    }
+
+
+    // 列表按钮   让按钮变大
+    $("#dataList td input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+    });
+    // 全选操作  全选操作
+    $("#selall").click(function () {
+        var clicks = $(this).is(':checked');
+        if (!clicks) {
+            $("#dataList td input[type='checkbox']").iCheck("uncheck");
+        } else {
+            $("#dataList td input[type='checkbox']").iCheck("check");
+        }
+        $(this).data("clicks", !clicks);
+    });
+
+</script>
+</body>
+
+</html>
