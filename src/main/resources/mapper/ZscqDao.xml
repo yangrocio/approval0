@@ -8,7 +8,7 @@
             and department = #{department}
         </if>
         <if test="username!='-1'">
-            and tusername = #{username}
+            and name = #{username}
         </if>
         <if test="start!='-1'">
             and adate &gt;= #{start}
